@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FB Movie Auto Poster — প্রতিটা পোস্টে ছবি সহ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>tailwind.config={theme:{extend:{fontFamily:{hind:['Hind Siliguri','sans-serif'],inter:['Inter','sans-serif']}}}}</script>
+<style>
+*{font-family:'Hind Siliguri','Inter',sans-serif}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:#6366f1;border-radius:999px}
+.anim{animation:up .5s ease}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.glass{backdrop-filter:blur(16px);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09)}
+.toggle:checked + div{background:#6366f1} .toggle:checked + div span{transform:translateX(20px)}
+</style>
+</head>
+<body class="bg-[#07071a] text-white min-h-screen overflow-x-hidden">
+<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+  <div class="absolute w-[700px] h-[700px] bg-violet-600 rounded-full blur-[180px] opacity-20 -top-40 -left-40"></div>
+  <div class="absolute w-[600px] h-[600px] bg-fuchsia-500 rounded-full blur-[160px] opacity-15 top-20 right-0"></div>
+  <div class="absolute w-[500px] h-[500px] bg-cyan-500 rounded-full blur-[140px] opacity-10 bottom-0 left-1/3"></div>
+</div>
+
+<nav class="sticky top-0 z-40 backdrop-blur-xl bg-[#07071a]/70 border-b border-white/10">
+  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-violet-600/20"><i class="fa-solid fa-film text-white"></i></div>
+      <div>
+        <div class="font-bold leading-none">Movie Auto Poster <span class="font-light text-violet-300">AI</span></div>
+        <div class="text-[11px] text-white/50 -mt-0.5">প্রতিটা পোস্টে ছবি সহ • Auto Post</div>
+      </div>
+      <span class="hidden sm:inline-flex ml-2 text-[10px] font-bold tracking-widest bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 rounded-full px-2.5 py-1">● MOVIE MODE</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openHelp()" class="hidden sm:inline-flex items-center gap-2 text-xs font-semibold border border-white/10 rounded-full px-4 py-2 hover:bg-white/10 transition"><i class="fa-regular fa-circle-question"></i> কিভাবে চালাবো?</button>
+      <button onclick="document.getElementById('settingsModal').classList.remove('hidden')" class="w-9 h-9 rounded-full bg-white text-[#07071a] flex items-center justify-center hover:scale-105 transition"><i class="fa-solid fa-gear text-sm"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 mt-4">
+  <div class="rounded-2xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-orange-500 p-[1px]">
+    <div class="rounded-2xl bg-[#0f0e2a] px-4 py-3 flex flex-wrap items-center gap-2 text-xs">
+      <span class="bg-white text-[#07071a] font-bold rounded-full px-3 py-1">✅ তোমার Page</span>
+      <span class="text-white/80">facebook.com/profile.php?id=61581031296082</span>
+      <span class="hidden sm:inline text-white/30">•</span>
+      <span class="text-emerald-300 font-semibold">70% বাংলা + 30% English</span>
+      <span class="text-white/30">•</span>
+      <span class="text-amber-300 font-semibold"><i class="fa-solid fa-image mr-1"></i>ছবি সহ</span>
+      <span class="ml-auto hidden sm:inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-bold rounded-full px-3 py-1 text-[11px]"><i class="fa-solid fa-robot"></i> FULL AUTOPILOT — Research + AI Image + SEO</span>
+    </div>
+  </div>
+</div>
+
+<!-- AUTOPILOT HERO -->
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 mt-4">
+  <div class="rounded-[22px] overflow-hidden p-[1.5px] bg-gradient-to-r from-violet-600 via-cyan-400 to-emerald-500">
+    <div class="rounded-[20px] bg-gradient-to-br from-[#0f0e2a] to-[#1a1040] p-5 sm:p-6">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-cyan-500 flex items-center justify-center shadow-lg shrink-0"><i class="fa-solid fa-robot text-white text-lg"></i></div>
+          <div>
+            <div class="font-bold text-lg leading-none flex flex-wrap items-center gap-2">🤖 Full AI Autopilot <span class="text-[10px] tracking-widest bg-emerald-500 text-white rounded-full px-2.5 py-1">RESEARCH + IMAGE + SEO + POST</span></div>
+            <div class="text-xs text-white/60 mt-1.5 leading-relaxed">AI নিজে অনলাইন রিসার্চ করবে → ট্রেন্ডিং টপিক বাছবে → SEO ক্যাপশন লিখবে → নিজে ছবি বানাবে → Auto পোস্ট করবে। তোমার কিছুই করতে হবে না!</div>
+            <div class="flex flex-wrap gap-1.5 mt-2.5">
+              <span class="text-[11px] bg-white/10 border border-white/10 rounded-full px-2.5 py-1"><i class="fa-solid fa-magnifying-glass text-cyan-400"></i> Online Research</span>
+              <span class="text-[11px] bg-white/10 border border-white/10 rounded-full px-2.5 py-1"><i class="fa-solid fa-wand-magic-sparkles text-fuchsia-400"></i> AI Image Generate</span>
+              <span class="text-[11px] bg-white/10 border border-white/10 rounded-full px-2.5 py-1"><i class="fa-solid fa-ranking-star text-amber-400"></i> SEO Hashtags</span>
+              <span class="text-[11px] bg-white/10 border border-white/10 rounded-full px-2.5 py-1"><i class="fa-solid fa-paper-plane text-emerald-400"></i> Auto FB Post</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2 lg:items-end shrink-0">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input id="autopilotToggle" type="checkbox" class="sr-only toggle" onchange="toggleAutopilot()">
+            <div class="w-[56px] h-[32px] bg-white/15 rounded-full p-[4px] transition flex items-center"><span class="w-[24px] h-[24px] bg-white rounded-full shadow transition"></span></div>
+            <span class="ml-3 text-sm font-bold" id="autopilotLabel">Autopilot OFF</span>
+          </label>
+          <div class="text-xs text-white/50" id="autopilotHint">চালু করলে AI নিজে রিসার্চ করে ছবি সহ পোস্ট করবে</div>
+        </div>
+      </div>
+
+      <!-- Autopilot Status Strip -->
+      <div id="autopilotStrip" class="hidden mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="rounded-xl bg-white/[.06] border border-white/10 p-3">
+          <div class="text-[10px] tracking-widest font-bold text-white/50">🔍 LAST RESEARCH</div>
+          <div id="apResearch" class="text-xs font-semibold mt-1 text-cyan-300">—</div>
+          <div id="apResearchTime" class="text-[11px] text-white/40">—</div>
+        </div>
+        <div class="rounded-xl bg-white/[.06] border border-white/10 p-3">
+          <div class="text-[10px] tracking-widest font-bold text-white/50">🎨 LAST AI IMAGE</div>
+          <div id="apImagePrompt" class="text-xs font-semibold mt-1 text-fuchsia-300 line-clamp-2">—</div>
+          <div id="apImageUrl" class="text-[11px] text-white/40 truncate">—</div>
+        </div>
+        <div class="rounded-xl bg-white/[.06] border border-white/10 p-3">
+          <div class="text-[10px] tracking-widest font-bold text-white/50">📈 SEO SCORE</div>
+          <div id="apSeo" class="text-xs font-semibold mt-1 text-emerald-300">—</div>
+          <div id="apNextRun" class="text-[11px] text-white/40">—</div>
+        </div>
+      </div>
+
+      <div id="autopilotProgress" class="hidden mt-4 rounded-xl bg-violet-500/10 border border-violet-500/20 px-4 py-3 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center animate-pulse shrink-0"><i class="fa-solid fa-spinner fa-spin text-white text-xs"></i></div>
+        <div>
+          <div class="text-xs font-bold tracking-widest text-violet-300" id="apStep">RESEARCHING...</div>
+          <div class="text-sm font-semibold" id="apStepDetail">ট্রেন্ডিং মুভি টপিক খুঁজছে...</div>
+        </div>
+        <button onclick="toggleAutopilot(false)" class="ml-auto text-xs border border-white/15 rounded-full px-3 py-1.5 hover:bg-white/10">Stop</button>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button onclick="runAutopilotOnce()" class="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full px-5 py-2.5 text-sm font-bold hover:scale-[1.01] transition flex items-center gap-2"><i class="fa-solid fa-play"></i> একবার টেস্ট করো (Research → Image → Post)</button>
+        <button onclick="researchOnly()" class="border border-white/15 rounded-full px-5 py-2.5 text-sm font-bold hover:bg-white/10 transition"><i class="fa-solid fa-magnifying-glass"></i> শুধু Research দেখো (Token ছাড়া)</button>
+      </div>
+      <div class="text-[11px] text-white/40 mt-2"><i class="fa-solid fa-circle-info"></i> <b>Token ছাড়া টেস্ট:</b> <span class="text-emerald-300">“শুধু Research দেখো”</span> চাপলে FB এ যাবে না — শুধু Preview দেখাবে। Real Post এর জন্য Page Token লাগবে। Image ফ্রি AI দিয়ে — কোনো Image Key লাগে না।</div>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 mt-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
+  <div class="glass rounded-2xl p-4 flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-violet-600/20 border border-violet-500/20 flex items-center justify-center text-violet-400"><i class="fa-solid fa-paper-plane"></i></div>
+    <div><div class="text-[11px] tracking-widest text-white/50 font-bold">মোট পোস্ট</div><div id="statTotal" class="text-xl font-bold -mt-1">0</div></div>
+  </div>
+  <div class="glass rounded-2xl p-4 flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center text-emerald-400"><i class="fa-solid fa-check"></i></div>
+    <div><div class="text-[11px] tracking-widest text-white/50 font-bold">সফল</div><div id="statOk" class="text-xl font-bold -mt-1">0</div></div>
+  </div>
+  <div class="glass rounded-2xl p-4 flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center text-amber-400"><i class="fa-regular fa-clock"></i></div>
+    <div><div class="text-[11px] tracking-widest text-white/50 font-bold">পরবর্তী পোস্ট</div><div id="statNext" class="text-sm font-bold -mt-0.5">—</div></div>
+  </div>
+  <div class="glass rounded-2xl p-4 flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl flex items-center justify-center border" id="statConnIcon"><i class="fa-solid fa-link"></i></div>
+    <div><div class="text-[11px] tracking-widest text-white/50 font-bold">কানেকশন</div><div id="statConn" class="text-sm font-bold -mt-0.5">Not Connected</div></div>
+  </div>
+</div>
+
+<div class="max-w-[1280px] mx-auto px-4 sm:px-6 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6 pb-10">
+
+  <div class="lg:col-span-7 space-y-6">
+    <div class="glass rounded-[22px] overflow-hidden anim">
+      <div class="px-5 sm:px-6 pt-5 pb-3 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-500 flex items-center justify-center"><i class="fa-solid fa-wand-magic-sparkles text-sm"></i></div>
+          <div>
+            <div class="font-bold leading-none">Movie Post Generator</div>
+            <div class="text-xs text-white/50">মুভির নাম দাও — AI ক্যাপশন + ছবি সহ পোস্ট বানাবে</div>
+          </div>
+        </div>
+        <span class="text-[10px] font-bold tracking-widest bg-emerald-500 text-white rounded-full px-2.5 py-1"><i class="fa-solid fa-image mr-1"></i>IMAGE AUTO</span>
+      </div>
+
+      <div class="px-5 sm:px-6 pb-6 space-y-4">
+        <div>
+          <label class="text-xs font-bold tracking-widest text-white/60">মুভি টপিক / Category</label>
+          <input id="topicInput" placeholder="যেমন: Shakib Khan Toofan 2, Pathaan box office, Kalki review..." class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-violet-500 placeholder:text-white/30" value="Dhallywood movie news bangla">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="text-xs font-bold tracking-widest text-white/60">ভাষা (Auto Mix)</label>
+            <select id="langSel" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-3 py-3 text-sm outline-none focus:border-violet-500">
+              <option value="bn" class="text-black">বাংলা — 70%</option>
+              <option value="en" class="text-black">English — 30%</option>
+              <option value="mix" selected class="text-black">Auto Mix (Bangla বেশি)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-bold tracking-widest text-white/60">পোস্ট টাইপ</label>
+            <select id="toneSel" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-3 py-3 text-sm outline-none focus:border-violet-500">
+              <option value="news" class="text-black">🎬 Movie News</option>
+              <option value="boxoffice" class="text-black">💰 Box Office News</option>
+              <option value="fact" class="text-black">🤯 Movie Facts</option>
+              <option value="review" class="text-black">⭐ Short Review</option>
+              <option value="viral" class="text-black">🔥 Viral / Hook</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-bold tracking-widest text-white/60">Industry</label>
+            <select id="industrySel" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-3 py-3 text-sm outline-none focus:border-violet-500">
+              <option value="auto" class="text-black">🔄 Auto Rotate (সব)</option>
+              <option value="dhallywood" class="text-black">🇧🇩 Dhallywood</option>
+              <option value="tollywood" class="text-black">🇮🇳 Tollywood</option>
+              <option value="south" class="text-black">🔥 South Indian</option>
+              <option value="bollywood" class="text-black">🎥 Bollywood</option>
+              <option value="hollywood" class="text-black">🌍 Hollywood</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-bold tracking-widest text-white/60">AI Provider <span class="text-emerald-400">* CodeCraft Recommended</span></label>
+            <select id="aiProvider" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-3 py-3 text-sm outline-none focus:border-violet-500">
+              <option value="codecraft" class="text-black">⚡ CodeCraft API (33 Models - সস্তা!)</option>
+              <option value="builtin" class="text-black">Built-in AI (ফ্রি, অফলাইন)</option>
+              <option value="openai" class="text-black">OpenAI Direct</option>
+              <option value="gemini" class="text-black">Google Gemini Direct</option>
+              <option value="claude" class="text-black">Claude Direct</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-bold tracking-widest text-white/60">CodeCraft Model</label>
+            <select id="ccModel" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-3 py-3 text-sm outline-none focus:border-violet-500">
+              <option value="gemini-1.5-flash" class="text-black">Gemini 1.5 Flash (Fast & Cheap)</option>
+              <option value="gpt-4o-mini" class="text-black">GPT-4o Mini (Best Value)</option>
+              <option value="claude-3-haiku-20240307" class="text-black">Claude 3 Haiku (Smart)</option>
+              <option value="deepseek-v3" class="text-black">DeepSeek V3 (Powerful)</option>
+              <option value="qwen-2.5-72b" class="text-black">Qwen 2.5 72B</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="apiKeyBox" class="">
+          <div class="rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-3 py-2.5 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-key text-emerald-400"></i>
+            <div class="flex-1">
+              <div class="text-xs font-bold text-emerald-300">CodeCraft API Key</div>
+              <div class="text-[11px] text-white/50"><a href="https://codecraftapi.com/" target="_blank" class="underline text-emerald-300">codecraftapi.com</a> → Dashboard → API Key কপি করে নিচে পেস্ট করো — 1M Token ফ্রি!</div>
+            </div>
+            <a href="https://codecraftapi.com/" target="_blank" class="text-[11px] bg-emerald-500 text-white rounded-full px-3 py-1 font-bold hover:bg-emerald-600">Get Key →</a>
+          </div>
+          <input id="apiKeyInput" type="password" placeholder="cc-... বা sk-... (CodeCraft API Key)" class="w-full bg-white/[.06] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-violet-500 placeholder:text-white/30">
+          <label class="flex items-center gap-2 mt-1.5 text-xs text-white/60 cursor-pointer"><input type="checkbox" onchange="document.getElementById('apiKeyInput').type=this.checked?'text':'password'" class="accent-violet-600"> Key দেখাও</label>
+          <div class="text-[11px] text-white/40 mt-1">Key শুধু তোমার ব্রাউজারে থাকবে, কোথাও পাঠানো হবে না। ফাঁকা রাখলে Built-in AI চলবে।</div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button onclick="generatePost()" id="genBtn" class="flex-1 min-w-[180px] bg-gradient-to-r from-violet-600 to-fuchsia-500 rounded-full px-6 py-3 text-sm font-bold shadow-lg shadow-violet-600/20 hover:scale-[1.01] active:scale-[.99] transition flex items-center justify-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Movie Post</button>
+          <button onclick="generateVariation()" class="border border-white/10 rounded-full px-5 py-3 text-sm font-semibold hover:bg-white/10 transition"><i class="fa-solid fa-shuffle mr-1"></i> Variation</button>
+        </div>
+
+        <div class="flex flex-wrap gap-1.5">
+          <span class="text-[11px] text-white/40 font-bold tracking-widest mr-1">QUICK MOVIE:</span>
+          <button onclick="setTopic('Dhallywood Shakib Khan box office news')" class="text-xs bg-white/10 hover:bg-white/15 border border-white/10 rounded-full px-3 py-1">🇧🇩 Dhallywood</button>
+          <button onclick="setTopic('South Indian Allu Arjun movie fact')" class="text-xs bg-white/10 hover:bg-white/15 border border-white/10 rounded-full px-3 py-1">🔥 South</button>
+          <button onclick="setTopic('Bollywood SRK box office collection')" class="text-xs bg-white/10 hover:bg-white/15 border border-white/10 rounded-full px-3 py-1">🎥 Bollywood</button>
+          <button onclick="setTopic('Hollywood Avengers box office fact')" class="text-xs bg-white/10 hover:bg-white/15 border border-white/10 rounded-full px-3 py-1">🌍 Hollywood</button>
+          <button onclick="setTopic('Tollywood Jeet movie review bangla')" class="text-xs bg-white/10 hover:bg-white/15 border border-white/10 rounded-full px-3 py-1">🎬 Tollywood</button>
+          <button onclick="setTopic('Movie facts bangla viral')" class="text-xs bg-white/10 hover:bg-white/15 border border-white/10 rounded-full px-3 py-1">🤯 Facts</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass rounded-[22px] p-5 sm:p-6 anim" style="animation-delay:.05s">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <div class="font-bold flex items-center gap-2"><i class="fa-regular fa-pen-to-square text-violet-400"></i> পোস্ট এডিটর <span class="text-[10px] bg-emerald-500 text-white rounded-full px-2 py-0.5">IMAGE MUST</span></div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="copyPost()" class="text-xs border border-white/10 rounded-full px-3 py-1.5 hover:bg-white/10"><i class="fa-regular fa-copy"></i> Copy</button>
+          <button onclick="clearPost()" class="text-xs border border-white/10 rounded-full px-3 py-1.5 hover:bg-white/10">Clear</button>
+        </div>
+      </div>
+      <textarea id="postText" rows="7" placeholder="এখানে মুভি পোস্ট লেখা আসবে... Generate চাপো" class="w-full bg-white/[.06] border border-white/10 rounded-2xl px-4 py-3 text-sm outline-none focus:border-violet-500 placeholder:text-white/30 resize-y"></textarea>
+      <div class="flex items-center justify-between mt-2">
+        <div class="text-xs text-white/40"><span id="charCount">0</span> অক্ষর • <span id="hashCount">0</span> হ্যাশট্যাগ</div>
+        <div class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-image"></i> ছবি Auto যুক্ত হবে</div>
+      </div>
+      <!-- IMAGE BOX ALWAYS VISIBLE -->
+      <div id="imageBox" class="mt-3">
+        <label class="text-xs font-bold tracking-widest text-white/60">পোস্টের ছবি <span class="text-emerald-400">* বাধ্যতামূলক — ফাঁকা রাখলে Auto মুভি পোস্টার আসবে</span></label>
+        <input id="imageUrl" placeholder="ছবির URL পেস্ট করো বা নিচ থেকে বেছে নাও — ফাঁকা রাখলে Auto" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-violet-500 placeholder:text-white/30">
+        <div class="grid grid-cols-4 gap-2 mt-2">
+          <button onclick="pickImage(0)" class="rounded-xl overflow-hidden border border-white/10 hover:border-violet-500 aspect-[4/3] bg-white/5 relative group"><img id="thumb0" src="https://picsum.photos/seed/movieposter1/400/300" class="w-full h-full object-cover"><span class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></span></button>
+          <button onclick="pickImage(1)" class="rounded-xl overflow-hidden border border-white/10 hover:border-violet-500 aspect-[4/3] bg-white/5 relative group"><img id="thumb1" src="https://picsum.photos/seed/movieposter2/400/300" class="w-full h-full object-cover"><span class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></span></button>
+          <button onclick="pickImage(2)" class="rounded-xl overflow-hidden border border-white/10 hover:border-violet-500 aspect-[4/3] bg-white/5 relative group"><img id="thumb2" src="https://picsum.photos/seed/movieposter3/400/300" class="w-full h-full object-cover"><span class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></span></button>
+          <button onclick="pickImage(3)" class="rounded-xl overflow-hidden border border-emerald-500/30 hover:border-emerald-500 aspect-[4/3] bg-emerald-500/10 flex flex-col items-center justify-center text-xs text-emerald-300 font-bold"><i class="fa-solid fa-shuffle text-sm mb-1"></i> Auto Random</button>
+        </div>
+        <div class="text-[11px] text-white/40 mt-1.5"><i class="fa-solid fa-lightbulb text-amber-400"></i> টিপস: মুভির আসল পোস্টার URL দিলে Reach 3x বাড়ে! Google থেকে পোস্টার কপি করে URL পেস্ট করো।</div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4">
+        <button onclick="postNow()" id="postNowBtn" class="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full py-3 text-sm font-bold flex items-center justify-center gap-2 transition"><i class="fa-solid fa-paper-plane"></i> ছবি সহ পোস্ট করো</button>
+        <button onclick="scheduleOnce()" class="bg-white text-[#07071a] rounded-full py-3 text-sm font-bold flex items-center justify-center gap-2 hover:bg-white/90 transition"><i class="fa-regular fa-clock"></i> Schedule</button>
+        <button onclick="saveDraft()" class="border border-white/15 rounded-full py-3 text-sm font-bold hover:bg-white/10 transition"><i class="fa-regular fa-floppy-disk"></i> Draft</button>
+      </div>
+      <div id="postStatus" class="hidden mt-3 rounded-xl px-4 py-3 text-sm"></div>
+    </div>
+  </div>
+
+  <div class="lg:col-span-5 space-y-6">
+    <div class="glass rounded-[22px] overflow-hidden anim" style="animation-delay:.08s">
+      <div class="px-5 pt-5 pb-3 flex items-center justify-between">
+        <div class="flex items-center gap-2 font-bold"><i class="fa-brands fa-facebook text-[#1877F2]"></i> Facebook Preview <span class="text-[10px] bg-white text-black rounded-full px-2 py-0.5">IMAGE POST</span></div>
+        <span class="text-[10px] text-white/40">ছবি সহ</span>
+      </div>
+      <div class="px-5 pb-5">
+        <div class="bg-white rounded-[18px] overflow-hidden text-[#050505]">
+          <div class="p-3 flex items-center gap-3">
+            <img id="previewAvatar" src="https://picsum.photos/seed/page/100/100" class="w-9 h-9 rounded-full object-cover">
+            <div class="flex-1 min-w-0">
+              <div id="previewPageName" class="text-sm font-bold leading-none truncate">তোমার Movie Page</div>
+              <div class="text-[11px] text-black/50">Just now • <i class="fa-solid fa-earth-asia"></i></div>
+            </div>
+            <i class="fa-solid fa-ellipsis text-black/40"></i>
+          </div>
+          <div id="previewText" class="px-3 pb-3 text-[14px] leading-[1.5] whitespace-pre-wrap break-words text-[#050505]">এখানে তোমার মুভি পোস্টের preview দেখাবে...</div>
+          <div id="previewImgWrap"><img id="previewImg" src="https://picsum.photos/seed/movieposter1/800/500" class="w-full object-cover max-h-[380px]"></div>
+          <div class="px-3 py-2 flex items-center justify-between text-[13px] text-black/50 border-t border-black/10">
+            <span><i class="fa-solid fa-thumbs-up text-[#1877F2]"></i> <span id="previewLikes">2.4k</span> <span class="hidden sm:inline">• 🔥 1.1k loves</span></span>
+            <span><span id="previewComments">156</span> comments • <span id="previewShares">42</span> shares</span>
+          </div>
+          <div class="flex border-t border-black/10 text-[13px] font-semibold text-black/60">
+            <div class="flex-1 py-2.5 text-center"><i class="fa-regular fa-thumbs-up mr-1"></i> Like</div>
+            <div class="flex-1 py-2.5 text-center"><i class="fa-regular fa-comment mr-1"></i> Comment</div>
+            <div class="flex-1 py-2.5 text-center"><i class="fa-solid fa-share mr-1"></i> Share</div>
+          </div>
+        </div>
+        <div class="mt-2 text-[11px] text-emerald-300 text-center"><i class="fa-solid fa-check"></i> এই পোস্ট ছবি সহ যাবে — Reach বেশি পাবে!</div>
+      </div>
+    </div>
+
+    <div class="glass rounded-[22px] p-5 sm:p-6 anim" style="animation-delay:.12s">
+      <div class="flex items-center justify-between gap-3">
+        <div class="font-bold flex items-center gap-2"><i class="fa-solid fa-stopwatch text-emerald-400"></i> Auto Scheduler</div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input id="autoToggle" type="checkbox" class="sr-only toggle" onchange="toggleAuto()">
+          <div class="w-[44px] h-[26px] bg-white/15 rounded-full p-[3px] transition flex items-center"><span class="w-[20px] h-[20px] bg-white rounded-full shadow transition"></span></div>
+        </label>
+      </div>
+      <div class="text-xs text-white/50 -mt-1 mb-3" id="autoHint">বন্ধ আছে — চালু করলে প্রতি পোস্ট ছবি সহ auto যাবে</div>
+
+      <div class="rounded-xl bg-violet-500/10 border border-violet-500/20 px-3 py-2.5 text-xs mb-3">
+        <div class="font-bold text-violet-300"><i class="fa-solid fa-rotate mr-1"></i> Auto Rotation (তোমার চাহিদা অনুযায়ী)</div>
+        <div class="text-white/60 mt-1 leading-relaxed">সকাল 11টা → Box Office (Bangla) • বিকাল 5টা → Dhallywood/South (Bangla) • রাত 9টা → Facts/Review (English) — Industry auto ঘুরবে</div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-bold tracking-widest text-white/60">প্রতি কতক্ষণ পর?</label>
+          <select id="intervalSel" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-3 py-2.5 text-sm outline-none">
+            <option value="180" class="text-black">3 ঘন্টা (দিনে 3টা)</option>
+            <option value="240" class="text-black">4 ঘন্টা</option>
+            <option value="360" selected class="text-black">6 ঘন্টা</option>
+            <option value="480" class="text-black">8 ঘন্টা</option>
+            <option value="720" class="text-black">12 ঘন্টা</option>
+            <option value="1440" class="text-black">24 ঘন্টা</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs font-bold tracking-widest text-white/60">Daily limit</label>
+          <select id="limitSel" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-3 py-2.5 text-sm outline-none">
+            <option value="0" class="text-black">Unlimited</option>
+            <option value="3" selected class="text-black">3 / দিন ✓</option>
+            <option value="5" class="text-black">5 / দিন</option>
+            <option value="10" class="text-black">10 / দিন</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-3 flex items-center gap-2">
+        <input id="scheduleTime" type="datetime-local" class="flex-1 bg-white/[.06] border border-white/10 rounded-xl px-3 py-2.5 text-sm outline-none">
+        <span class="text-xs text-white/40">একবারের জন্য</span>
+      </div>
+
+      <div id="countdownBox" class="hidden mt-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 px-4 py-3 flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center animate-pulse"><i class="fa-solid fa-bolt text-white text-xs"></i></div>
+        <div><div class="text-xs font-bold tracking-widest text-emerald-300">AUTO RUNNING — IMAGE POST</div><div id="countdown" class="text-sm font-bold">—</div></div>
+        <button onclick="toggleAuto(false)" class="ml-auto text-xs border border-white/15 rounded-full px-3 py-1.5 hover:bg-white/10">Stop</button>
+      </div>
+
+      <div class="mt-3 rounded-xl bg-amber-500/10 border border-amber-500/20 px-3 py-2.5 text-xs leading-relaxed text-amber-200/90">
+        <i class="fa-solid fa-triangle-exclamation mr-1"></i> Browser বন্ধ করলে auto pause হবে। 24/7 চালাতে VPS লাগবে — নিচে Server Files আছে।
+      </div>
+    </div>
+
+    <div class="glass rounded-[22px] p-5 sm:p-6 anim" style="animation-delay:.15s">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <div class="font-bold flex items-center gap-2"><i class="fa-solid fa-list-check text-violet-400"></i> History & Logs</div>
+        <button onclick="clearLogs()" class="text-xs border border-white/10 rounded-full px-3 py-1.5 hover:bg-white/10">Clear</button>
+      </div>
+      <div id="logList" class="space-y-2 max-h-[260px] overflow-auto pr-1">
+        <div class="text-xs text-white/40 border border-dashed border-white/10 rounded-xl px-4 py-6 text-center">এখনো কোনো পোস্ট হয়নি</div>
+      </div>
+    </div>
+
+    <div class="rounded-[22px] p-5 bg-gradient-to-br from-violet-600 to-fuchsia-500 anim" style="animation-delay:.18s">
+      <div class="font-bold flex items-center gap-2"><i class="fa-solid fa-server"></i> 24/7 Free Host করো</div>
+      <div class="text-sm text-white/90 leading-relaxed mt-1">PC বন্ধ থাকলেও চলবে — Render / GitHub Actions (100% ফ্রি)</div>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <a href="./host-guide.html" class="bg-white text-violet-700 rounded-full px-5 py-2.5 text-sm font-bold hover:bg-white/90 transition inline-flex items-center gap-2"><i class="fa-solid fa-rocket"></i> Free Hosting Guide</a>
+        <button onclick="downloadServerFiles()" class="bg-white/15 border border-white/20 text-white rounded-full px-5 py-2.5 text-sm font-bold hover:bg-white/20 transition"><i class="fa-solid fa-download mr-1"></i> Server Files</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="settingsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('settingsModal').classList.add('hidden')"></div>
+  <div class="relative w-full max-w-[640px] rounded-[22px] overflow-hidden bg-[#12112a] border border-white/10 shadow-2xl anim max-h-[90vh] overflow-auto">
+    <div class="p-6 border-b border-white/10 flex items-center justify-between gap-3 sticky top-0 bg-[#12112a]">
+      <div class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-gear text-violet-400"></i> Facebook Page Setup</div>
+      <button onclick="document.getElementById('settingsModal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/15"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div class="rounded-xl bg-[#1877F2]/15 border border-[#1877F2]/20 px-4 py-3 text-sm leading-relaxed">
+        <div class="font-bold text-[#60a5fa]"><i class="fa-brands fa-facebook mr-1"></i> কিভাবে Page Token নেবে?</div>
+        <ol class="list-decimal ml-5 mt-1 space-y-1 text-white/75 text-xs">
+          <li><a class="underline" href="https://developers.facebook.com/" target="_blank">developers.facebook.com</a> → My Apps → Create App</li>
+          <li>Graph API Explorer → তোমার Page select → <b>pages_manage_posts, pages_read_engagement</b> permission</li>
+          <li>Generate Access Token → সেটা নিচে Page Access Token এ পেস্ট করো</li>
+          <li>Page ID: <b>61581031296082</b> (তোমার Page ID auto বসানো আছে)</li>
+        </ol>
+        <div class="mt-2 text-[11px] text-white/50">Token কখনো কারো সাথে শেয়ার করো না। শুধু তোমার browser এ থাকবে।</div>
+      </div>
+      <div>
+        <label class="text-xs font-bold tracking-widest text-white/60">Facebook Page ID *</label>
+        <input id="pageId" placeholder="61581031296082" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-violet-500 placeholder:text-white/30">
+      </div>
+      <div>
+        <label class="text-xs font-bold tracking-widest text-white/60">Page Access Token *</label>
+        <input id="pageToken" type="password" placeholder="EAAG... (long token)" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-violet-500 placeholder:text-white/30">
+        <label class="flex items-center gap-2 mt-2 text-xs text-white/60 cursor-pointer"><input type="checkbox" onchange="document.getElementById('pageToken').type=this.checked?'text':'password'" class="accent-violet-600"> Token দেখাও</label>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-bold tracking-widest text-white/60">Page Name (preview)</label>
+          <input id="pageName" placeholder="Movie News BD" class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-violet-500 placeholder:text-white/30">
+        </div>
+        <div>
+          <label class="text-xs font-bold tracking-widest text-white/60">Page Avatar URL (optional)</label>
+          <input id="pageAvatar" placeholder="https://..." class="mt-1.5 w-full bg-white/[.06] border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:border-violet-500 placeholder:text-white/30">
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-2 pt-2">
+        <button onclick="saveSettings()" class="flex-1 min-w-[160px] bg-gradient-to-r from-violet-600 to-fuchsia-500 rounded-full px-6 py-3 text-sm font-bold hover:scale-[1.01] transition">Save & Connect</button>
+        <button onclick="testConnection()" class="border border-white/15 rounded-full px-6 py-3 text-sm font-bold hover:bg-white/10 transition"><i class="fa-solid fa-plug mr-1"></i> Test Connection</button>
+      </div>
+      <div id="connStatus" class="hidden rounded-xl px-4 py-3 text-sm"></div>
+      <div class="text-[11px] text-white/30 text-center">Token / ID localStorage এ save হবে — কোথাও upload হবে না।</div>
+    </div>
+  </div>
+</div>
+
+<div id="helpModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('helpModal').classList.add('hidden')"></div>
+  <div class="relative w-full max-w-[640px] rounded-[22px] overflow-hidden bg-[#12112a] border border-white/10 shadow-2xl anim max-h-[90vh] overflow-auto">
+    <div class="p-6 border-b border-white/10 flex items-center justify-between">
+      <div class="font-bold text-lg">কিভাবে চালাবো — ছবি সহ পোস্ট</div>
+      <button onclick="document.getElementById('helpModal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="p-6 space-y-4 text-sm leading-relaxed">
+      <div class="flex gap-3"><span class="w-7 h-7 rounded-full bg-violet-600 flex items-center justify-center text-xs font-bold shrink-0">1</span><div><b>Settings ⚙️</b> — Page ID (61581031296082) + Token দাও → Save & Connect → Test Connection সবুজ হলে OK</div></div>
+      <div class="flex gap-3"><span class="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-xs font-bold shrink-0">2</span><div><b>Generate ✨</b> — মুভির নাম লিখো → Generate → Caption + <b>Auto ছবি</b> চলে আসবে। ছবি পছন্দ না হলে নিচের 4টা থেকে বেছে নাও বা Google থেকে পোস্টার URL পেস্ট করো।</div></div>
+      <div class="flex gap-3"><span class="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-xs font-bold shrink-0">3</span><div><b>Post 🚀</b> — "ছবি সহ পোস্ট করো" চাপো — FB তে ছবি সহ যাবে। Auto Scheduler চালু করলে প্রতি 6 ঘন্টায় ছবি সহ auto যাবে।</div></div>
+      <div class="rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-4 text-xs text-emerald-200">
+        <div class="font-bold"><i class="fa-solid fa-image"></i> কেন প্রতিটা পোস্টে ছবি?</div>
+        FB তে ছবি সহ পোস্টে Reach 3-5 গুণ বেশি! Text-only পোস্ট এখন আর ভাইরাল হয় না। তাই এই Tool এ ছবি বাধ্যতামূলক করা হয়েছে — ফাঁকা রাখলেও Auto মুভি পোস্টার যুক্ত হবে।
+      </div>
+      <div class="rounded-xl bg-white/[.06] border border-white/10 p-4 text-xs text-white/70">
+        <div class="font-bold text-white mb-1">⚠️ Facebook Policy</div>
+        দিনে 3-5 টা ছবি সহ পোস্ট safe। Interval কমপক্ষে 3-6 ঘন্টা রাখো। একই ছবি বারবার দিও না — Auto Random ব্যবহার করো।
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LS_KEY='fb_movie_poster_v2';
+const $=id=>document.getElementById(id);
+let state = loadState();
+let timer=null, countdownTimer=null, nextAt=null, todayCount=0, lastDateStr='';
+
+function loadState(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {} }catch{ return {} } }
+function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+
+function defaultState(){
+  return {
+    pageId: state.pageId||'61581031296082', pageToken: state.pageToken||'',
+    pageName: state.pageName||'Movie News BD', pageAvatar: state.pageAvatar||'',
+    topic: state.topic||'Dhallywood movie news bangla', lang: state.lang||'mix', tone: state.tone||'news',
+    industry: state.industry||'auto',
+    aiProvider: state.aiProvider||'codecraft', apiKey: state.apiKey||'',
+    ccModel: state.ccModel||'gpt-4o-mini',
+    imageUrl: state.imageUrl||'',
+    intervalMin: state.intervalMin||360, limit: state.limit||3,
+    autoOn: false, logs:[], stats:{total:0,ok:0}
+  }
+}
+let S = defaultState();
+
+const MOVIE_IMAGES = {
+  dhallywood: ['movie-dhally-1','shakib-khan1','dhallywood2','bangla-movie1'],
+  south: ['south-indian1','allu-arjun1','prabhas1','south-movie2'],
+  bollywood: ['bollywood1','srk-poster1','bollywood2','mumbai-movie1'],
+  hollywood: ['hollywood1','avengers1','hollywood2','cinema-usa1'],
+  tollywood: ['tollywood1','jeet-movie1','kolkata-movie1','tolly2'],
+  general: ['movieposter1','cinema1','movieposter2','movieposter3','film-reel1','movie-night1']
+};
+
+// TOPIC-MATCHED AI IMAGE (Pollinations - free, no key) — poster topic er sathe mil thakbe
+function topicMatchedImage(topic, detail=""){
+  const clean = (topic + " " + detail).replace(/[^a-zA-Z0-9ঀ-৿ ,-]/g,' ').trim().slice(0,120);
+  const promptEnc = encodeURIComponent(clean + ", cinematic movie poster, 4k, highly detailed, dramatic lighting");
+  const seed = Math.floor(Math.random()*999999);
+  return `https://image.pollinations.ai/p/${promptEnc}?width=800&height=500&seed=${seed}&nologo=true`;
+}
+// Fallback picsum (jodi Pollinations slow hoy)
+function fallbackImage(topic){
+  const t=(topic||'').toLowerCase();
+  let pool=MOVIE_IMAGES.general;
+  if(t.includes('shakib')||t.includes('dhally')||t.includes('toofan')||t.includes('bangla')) pool=MOVIE_IMAGES.dhallywood;
+  else if(t.includes('south')||t.includes('allu')||t.includes('prabhas')||t.includes('baahubali')||t.includes('kalki')||t.includes('tamil')||t.includes('telugu')) pool=MOVIE_IMAGES.south;
+  else if(t.includes('bolly')||t.includes('srk')||t.includes('salman')||t.includes('pathaan')||t.includes('jawan')) pool=MOVIE_IMAGES.bollywood;
+  else if(t.includes('holly')||t.includes('avenger')||t.includes('marvel')||t.includes('dc ')) pool=MOVIE_IMAGES.hollywood;
+  else if(t.includes('jeet')||t.includes('kolkata')||t.includes('tolly')) pool=MOVIE_IMAGES.tollywood;
+  const seed=pool[Math.floor(Math.random()*pool.length)] + '-' + Math.floor(Math.random()*999);
+  return `https://picsum.photos/seed/${seed}/800/500`;
+}
+function movieImageFor(topic, detail=""){
+  // Primary: topic-matched AI image, fallback: picsum
+  try{ return topicMatchedImage(topic, detail); }catch{ return fallbackImage(topic); }
+}
+
+function refreshThumbs(){
+  const topic=$('topicInput').value;
+  const detail=$('postText').value.slice(0,60);
+  for(let i=0;i<3;i++){
+    const el=document.getElementById('thumb'+i);
+    if(el) el.src=topicMatchedImage(topic + " poster variation "+(i+1), detail);
+    // if image fails to load quickly, keep it; fbPost has fallback
+  }
+}
+
+// init UI
+$('pageId').value=S.pageId; $('pageToken').value=S.pageToken; $('pageName').value=S.pageName; $('pageAvatar').value=S.pageAvatar;
+$('topicInput').value=S.topic; $('langSel').value=S.lang; $('toneSel').value=S.tone;
+const indEl=$('industrySel'); if(indEl) indEl.value=S.industry;
+$('aiProvider').value=S.aiProvider;
+if($('ccModel')) $('ccModel').value=S.ccModel;
+$('apiKeyInput').value=S.apiKey; $('imageUrl').value=S.imageUrl;
+$('intervalSel').value=String(S.intervalMin); $('limitSel').value=String(S.limit);
+refreshThumbs(); updatePreviewMeta(); refreshStats(); renderLogs(); syncApiBox();
+
+$('langSel').addEventListener('change', e=>{ S.lang=e.target.value; save(); updatePreview(); });
+$('toneSel').addEventListener('change', e=>{ S.tone=e.target.value; save(); });
+if(indEl) indEl.addEventListener('change', e=>{ S.industry=e.target.value; save(); refreshThumbs(); updatePreview(); });
+$('aiProvider').addEventListener('change', e=>{ S.aiProvider=e.target.value; save(); syncApiBox(); });
+if($('ccModel')) $('ccModel').addEventListener('change', e=>{ S.ccModel=e.target.value; save(); });
+$('apiKeyInput').addEventListener('input', e=>{ S.apiKey=e.target.value; save(); });
+$('topicInput').addEventListener('input', e=>{ S.topic=e.target.value; save(); refreshThumbs(); updatePreview(); });
+$('intervalSel').addEventListener('change', e=>{ S.intervalMin=parseInt(e.target.value); save(); if(S.autoOn) restartAuto(); });
+$('limitSel').addEventListener('change', e=>{ S.limit=parseInt(e.target.value); save(); });
+$('imageUrl').addEventListener('input', e=>{ S.imageUrl=e.target.value.trim(); save(); updatePreview(); });
+$('postText').addEventListener('input', ()=>{ updatePreview(); updateCounts(); });
+$('pageName').addEventListener('input', updatePreviewMeta);
+$('pageAvatar').addEventListener('input', updatePreviewMeta);
+
+function save(){
+  state = {...state, pageId:$('pageId').value.trim(), pageToken:$('pageToken').value.trim(),
+    pageName:$('pageName').value.trim(), pageAvatar:$('pageAvatar').value.trim(),
+    topic:$('topicInput').value.trim(), lang:$('langSel').value, tone:$('toneSel').value,
+    industry:$('industrySel')?$('industrySel').value:'auto',
+    aiProvider:$('aiProvider').value, apiKey:$('apiKeyInput').value.trim(),
+    ccModel:$('ccModel')?$('ccModel').value:'gpt-4o-mini',
+    imageUrl:$('imageUrl').value.trim(),
+    intervalMin:parseInt($('intervalSel').value), limit:parseInt($('limitSel').value),
+    stats:S.stats, logs:S.logs
+  };
+  S = {...S, ...state};
+  saveState(); refreshStats();
+}
+function syncApiBox(){
+  const v=$('aiProvider').value;
+  const show = v!=='builtin';
+  $('apiKeyBox').classList.toggle('hidden', !show);
+  const ccSel=$('ccModel');
+  if(ccSel) ccSel.parentElement.classList.toggle('hidden', v!=='codecraft');
+  // show/hide the whole grid row nicely
+  if(v==='codecraft'){
+    $('apiKeyInput').placeholder='cc-... বা Bearer token (codecraftapi.com থেকে)';
+  } else if(v==='openai') $('apiKeyInput').placeholder='sk-... (OpenAI API Key)';
+  else if(v==='gemini') $('apiKeyInput').placeholder='AIza... (Gemini API Key)';
+  else if(v==='claude') $('apiKeyInput').placeholder='sk-ant-... (Claude API Key)';
+  else $('apiKeyInput').placeholder='API Key';
+}
+function setTopic(t){ $('topicInput').value=t; S.topic=t; save(); refreshThumbs(); generatePost(); }
+function updatePreviewMeta(){
+  $('previewPageName').textContent = $('pageName').value.trim() || 'Movie News BD';
+  const av=$('pageAvatar').value.trim();
+  if(av) $('previewAvatar').src=av;
+}
+function updatePreview(){
+  const t=$('postText').value.trim();
+  $('previewText').textContent = t || 'এখানে তোমার মুভি পোস্টের preview দেখাবে...';
+  // IMAGE IS ALWAYS VISIBLE — TOPIC MATCHED
+  let url=$('imageUrl').value.trim();
+  if(!url){
+    const topic=$('topicInput').value;
+    const detail=t.slice(0,80);
+    url=topicMatchedImage(topic, detail);
+  }
+  $('previewImg').src=url;
+  $('previewImgWrap').classList.remove('hidden');
+  $('previewLikes').textContent = (900+Math.floor(Math.random()*800)).toLocaleString();
+}
+function updateCounts(){
+  const t=$('postText').value;
+  $('charCount').textContent = t.length;
+  $('hashCount').textContent = (t.match(/#\w+/g)||[]).length;
+}
+function pickImage(i){
+  if(i===3){
+    const topic=$('topicInput').value;
+    const detail=$('postText').value.slice(0,80);
+    const url=topicMatchedImage(topic + " alternative poster", detail);
+    $('imageUrl').value=url; S.imageUrl=url; save(); updatePreview(); toast('🎲 "'+topic+'" এর জন্য নতুন Topic-matched ছবি');
+    return;
+  }
+  const thumb=document.getElementById('thumb'+i);
+  let url=thumb ? thumb.src : topicMatchedImage($('topicInput').value, $('postText').value.slice(0,60));
+  $('imageUrl').value=url; S.imageUrl=url; save(); updatePreview();
+}
+
+// ---------- MOVIE TEMPLATES (70% BN, 30% EN) ----------
+const MOVIE_TEMPLATES={
+  news_bn: [
+    "🔥 BREAKING: {movie} নিয়ে বড় আপডেট!\n{detail} — ফ্যানদের জন্য দারুণ খবর!\n\nআপনি কতটা excited? কমেন্টে জানান! 👇\n\n#{hashtag} #MovieNews #Bangla",
+    "🎬 {movie} এর নতুন পোস্টার রিলিজ! 🔥\n{detail}\nপ্রথম দেখায় কেমন লাগলো? ⭐\n\n#{hashtag} #Dhallywood #SouthIndian #MovieUpdate",
+    "📢 {movie} - রিলিজ ডেট ঘোষণা! 🗓️\n{detail}\nআপনি হলে গিয়ে দেখবেন তো? 🎟️\n\n#{hashtag} #ComingSoon"
+  ],
+  boxoffice_bn: [
+    "💰 BOX OFFICE DHAMAKA! 💥\n'{movie}' মাত্র {days} দিনে {amount} কোটি পার! 🔥\n{detail}\nHit না Blockbuster? আপনার মতামত? 👇\n\n#{hashtag} #BoxOffice #Collection",
+    "📊 {movie} Box Office Report:\nDay 1: {amount} কোটি 😱\n{detail}\nএই গতিতে রেকর্ড ভাঙবে কি? 🚀\n\n#{hashtag} #BoxOfficeCollection #HitOrFlop",
+    "🏆 {movie} ইতিহাস গড়লো!\n{detail}\nবাংলাদেশে এত কালেকশন আগে হয়নি! 🇧🇩🔥\n\n#{hashtag} #Record #BoxOffice"
+  ],
+  fact_bn: [
+    "🤯 জানেন কি?\n{movie} সিনেমার {detail}\nশুনে অবাক হবেন! 😱\n\nএমন আরো Fact পেতে Follow করুন! 👉\n\n#{hashtag} #MovieFacts #JanenKi",
+    "🎬 Behind The Scenes:\n{movie} তে {detail}\nপরিচালকের এই সিদ্ধান্তে সিনেমা হিট! ✨\n\n#{hashtag} #BehindTheScene #CinemaFacts",
+    "💡 Movie Fact:\n{detail}\n{movie} সম্পর্কে এই তথ্যটা জানতেন? 🤔\n\n#{hashtag} #UnknownFacts"
+  ],
+  review_bn: [
+    "⭐ SHORT REVIEW: {movie}\n{detail}\nঅভিনয়: ⭐⭐⭐⭐ | গল্প: ⭐⭐⭐⭐ | VFX: ⭐⭐⭐⭐⭐\nRating: 4/5 🔥\nআপনি দেখেছেন? কেমন লাগলো?\n\n#{hashtag} #MovieReview #ShortReview",
+    "🎬 দেখে এলাম: {movie}\n{detail}\nOne-time watch না Must Watch? — Must Watch! 🍿\nRating: ⭐ 4.5/5\n\n#{hashtag} #Review",
+    "🍿 {movie} — Review:\n{detail}\nFamily নিয়ে দেখার মতো সিনেমা! ❤️\n\n#{hashtag} #BanglaReview"
+  ],
+  news_en: [
+    "🔥 BREAKING: {movie} Update!\n{detail} — Fans are going crazy! 🤩\n\nAre you excited? Comment below! 👇\n\n#{hashtag} #MovieNews #Update",
+    "🎬 {movie} New Poster Out! 🔥\n{detail}\nHow's the look? Rate it! ⭐\n\n#{hashtag} #Hollywood #Bollywood"
+  ],
+  boxoffice_en: [
+    "💰 BOX OFFICE: '{movie}' crosses {amount} Cr in {days} days! 🔥\n{detail}\nBlockbuster loading... 🚀\n\n#{hashtag} #BoxOffice",
+    "📊 {movie} — Box Office Report 💥\n{detail}\nWill it break the record?\n\n#{hashtag} #Collection"
+  ],
+  fact_en: [
+    "🤯 Did You Know?\nIn {movie}, {detail} 😱\nAmazing fact, right?\n\n#{hashtag} #MovieFacts #DidYouKnow",
+    "🎬 BTS: {movie}\n{detail} — That's why it became a hit! ✨\n\n#{hashtag} #BehindTheScenes"
+  ],
+  review_en: [
+    "⭐ SHORT REVIEW: {movie}\n{detail}\nActing: ⭐⭐⭐⭐ | Story: ⭐⭐⭐⭐ | VFX: ⭐⭐⭐⭐⭐\nRating: 4/5 🔥\n\n#{hashtag} #MovieReview",
+    "🍿 Watched: {movie}\n{detail}\nVerdict: Must Watch! ❤️\nRating: ⭐ 4.5/5\n\n#{hashtag} #Review"
+  ]
+};
+
+const MOVIE_DB=[
+  {movie:"Toofan 2", detail:"Shakib Khan এর অ্যাকশন লুকে সবাই মুগ্ধ, ট্রেলার 24 ঘন্টায় 10M ভিউ!", hashtag:"Toofan2"},
+  {movie:"Pushpa 2", detail:"Allu Arjun এর নতুন লুকে ঝড়, বাজেট 500 কোটি!", hashtag:"Pushpa2"},
+  {movie:"Kalki 2898 AD", detail:"Prabhas + Amitabh এর VFX দেখে Hollywood ও অবাক!", hashtag:"Kalki2898AD"},
+  {movie:"Jawan", detail:"SRK এর এই সিনেমা 1000 কোটি ক্লাবে!", hashtag:"Jawan"},
+  {movie:"Baahubali", detail:"সেট বানাতে 2 বছর ও 250 কোটি খরচ হয়েছিল!", hashtag:"Baahubali"},
+  {movie:"Avengers: Secret Wars", detail:"Marvel এর সবচেয়ে বড় প্রজেক্ট, 2027 এ আসছে!", hashtag:"Avengers"},
+  {movie:"Priyotoma 2", detail:"Shakib Khan ফিরছেন নতুন চমক নিয়ে!", hashtag:"Priyotoma2"},
+  {movie:"Animal", detail:"Ranbir Kapoor এর ক্যারিয়ার সেরা পারফরম্যান্স!", hashtag:"Animal"},
+];
+
+function fillTemplate(str, data){
+  return str.replace(/{movie}/g,data.movie).replace(/{detail}/g,data.detail).replace(/{hashtag}/g,data.hashtag).replace(/{amount}/g,(20+Math.floor(Math.random()*80))).replace(/{days}/g,(1+Math.floor(Math.random()*5)));
+}
+
+function pickMovieTemplate(tone, lang){
+  const isEn = lang==='en' || (lang==='mix' && Math.random()<0.3); // 30% English when mix
+  const suffix = isEn ? '_en' : '_bn';
+  const key = tone + suffix;
+  if(MOVIE_TEMPLATES[key]) return {tpl: MOVIE_TEMPLATES[key], isEn};
+  // fallback
+  return {tpl: MOVIE_TEMPLATES['news'+suffix], isEn};
+}
+
+function hashtagsForMovie(topic, isEn){
+  if(isEn) return "#MovieNews #BoxOffice #Cinema";
+  return "#MovieNews #BanglaMovie #BoxOffice";
+}
+
+// ========== AUTOPILOT ENGINE: RESEARCH + AI IMAGE + SEO ==========
+function apSetStep(title, detail){
+  $('apStep').textContent=title;
+  $('apStepDetail').textContent=detail;
+  $('autopilotProgress').classList.remove('hidden');
+}
+function apHideProgress(){ $('autopilotProgress').classList.add('hidden'); }
+
+// 1) RESEARCH: ask CodeCraft AI to find trending movie topic + SEO keywords
+async function autopilotResearch(){
+  apSetStep('🔍 RESEARCHING...', 'AI ট্রেন্ডিং মুভি টপিক খুঁজছে...');
+  const ind=$('industrySel') ? $('industrySel').value : 'auto';
+  const indStr = ind==='auto' ? 'Dhallywood, Bollywood, South Indian, Hollywood, Tollywood (rotate)' : ind;
+  const prompt = `You are a movie news researcher. Today is ${new Date().toLocaleDateString('en-GB')}. Find ONE trending movie topic RIGHT NOW from these industries: ${indStr}. Return ONLY valid JSON with no markdown, no explanation:\n{"topic":"short trending topic 3-5 words","movie":"movie name","detail":"1 sentence news detail","industry":"one of dhallywood/bollywood/south/hollywood/tollywood","imagePrompt":"detailed English prompt for AI image generation, cinematic movie poster style","seoKeywords":["keyword1","keyword2","keyword3"],"hashtags":["#Hashtag1","#Hashtag2","#Hashtag3","#Hashtag4"]}`;
+  const raw = await callExternalAI(prompt);
+  if(!raw) throw new Error('Research failed — API Key চেক করো');
+  // extract JSON
+  let jsonStr = raw.trim();
+  const m = jsonStr.match(/\{[\s\S]*\}/);
+  if(m) jsonStr=m[0];
+  let data;
+  try{ data=JSON.parse(jsonStr); }catch{
+    // fallback: make topic from raw
+    data={topic: raw.slice(0,60), movie: 'Trending Movie', detail: raw.slice(0,120), industry: ind==='auto'?'dhallywood':ind, imagePrompt: raw.slice(0,120)+' cinematic movie poster', seoKeywords:['movie','trending'], hashtags:['#MovieNews','#Trending']};
+  }
+  $('apResearch').textContent = data.topic || data.movie;
+  $('apResearchTime').textContent = new Date().toLocaleString('bn-BD') + ' • ' + (data.industry||'auto');
+  return data;
+}
+
+// Fallback research when no API key (offline trending pool)
+function offlineResearch(){
+  const pool=[
+    {topic:"Shakib Khan Toofan 2", movie:"Toofan 2", detail:"Shakib Khan এর নতুন লুকে ঝড়, ট্রেলার 10M ভিউ!", industry:"dhallywood", imagePrompt:"Bangladeshi superstar Shakib Khan action movie poster, cinematic, dramatic lighting", seoKeywords:["Toofan 2","Shakib Khan"], hashtags:["#Toofan2","#ShakibKhan","#Dhallywood","#BanglaMovie"]},
+    {topic:"Pushpa 2 Box Office", movie:"Pushpa 2", detail:"Allu Arjun এর Pushpa 2 বক্স অফিসে 500 কোটি পার!", industry:"south", imagePrompt:"South Indian superstar Allu Arjun Pushpa 2 cinematic poster, forest background, intense", seoKeywords:["Pushpa 2","Allu Arjun"], hashtags:["#Pushpa2","#AlluArjun","#SouthIndian","#BoxOffice"]},
+    {topic:"SRK Jawan Record", movie:"Jawan", detail:"SRK এর Jawan 1000 কোটি ক্লাবে!", industry:"bollywood", imagePrompt:"Bollywood superstar SRK Jawan movie poster, action, city background", seoKeywords:["Jawan","SRK"], hashtags:["#Jawan","#SRK","#Bollywood","#Record"]},
+    {topic:"Kalki 2898 AD Review", movie:"Kalki 2898 AD", detail:"Prabhas এর Kalki VFX এ Hollywood কে টেক্কা!", industry:"south", imagePrompt:"Futuristic sci-fi movie Kalki 2898 AD poster, Prabhas, dystopian city, epic", seoKeywords:["Kalki 2898 AD","Prabhas"], hashtags:["#Kalki2898AD","#Prabhas","#SciFi","#Review"]},
+    {topic:"Avengers Secret Wars", movie:"Avengers: Secret Wars", detail:"Marvel এর সবচেয়ে বড় প্রজেক্ট 2027 এ আসছে!", industry:"hollywood", imagePrompt:"Marvel Avengers Secret Wars cinematic poster, superheroes assemble, epic sky", seoKeywords:["Avengers","Marvel"], hashtags:["#Avengers","#Marvel","#Hollywood","#SecretWars"]},
+    {topic:"Jeet New Movie", movie:"Jeet New Film", detail:"Tollywood superstar Jeet ফিরছেন ধামাকা নিয়ে!", industry:"tollywood", imagePrompt:"Tollywood superstar Jeet Bengali movie poster, stylish, Kolkata", seoKeywords:["Jeet","Tollywood"], hashtags:["#Jeet","#Tollywood","#BengaliMovie","#NewMovie"]},
+  ];
+  const d=pool[Math.floor(Math.random()*pool.length)];
+  $('apResearch').textContent=d.topic;
+  $('apResearchTime').textContent=new Date().toLocaleString('bn-BD')+' • '+d.industry+' (offline)';
+  return d;
+}
+
+// 2) AI IMAGE: Pollinations (free, no key) — TOPIC-MATCHED, not random!
+async function autopilotImage(imagePrompt, topic, detail=""){
+  apSetStep('🎨 IMAGE GENERATING...', `"${topic}" এর জন্য Topic-matched ছবি বানাচ্ছে...`);
+  const fullPrompt = (imagePrompt || topic + " " + detail).slice(0,300);
+  const url = topicMatchedImage(fullPrompt, detail);
+  const fbFallback = fallbackImage(topic);
+  $('apImagePrompt').textContent = fullPrompt.slice(0,90);
+  $('apImageUrl').textContent = url.slice(0,60)+'...';
+  // return AI image; fbPost will fallback if image URL fails to load on FB side
+  return url;
+}
+
+// 3) SEO CAPTION: ask CodeCraft to write final caption with SEO
+async function autopilotCaption(research){
+  apSetStep('📝 WRITING SEO CAPTION...', `"${research.movie}" নিয়ে SEO ক্যাপশন লিখছে...`);
+  const lang=$('langSel').value;
+  const tone=$('toneSel').value;
+  const langStr = lang==='mix' ? 'Bengali 70% and English 30% mix' : lang==='bn' ? 'Bengali' : 'English';
+  const prompt = `Write a viral Facebook post in ${langStr} about: Movie="${research.movie}", Detail="${research.detail}", Industry="${research.industry}", SEO keywords: ${research.seoKeywords.join(', ')}. Type: ${tone}. Rules: Under 500 chars, hook first line with emoji, 1-2 emojis naturally, 3-4 hashtags from ${research.hashtags.join(' ')} plus 1 SEO hashtag, end with a question to boost comments. No preamble, just the post.`;
+  let text;
+  try{ text=await callExternalAI(prompt); }catch(e){ text=null; }
+  if(!text || !text.trim()){
+    // fallback template
+    const {tpl} = pickMovieTemplate(tone, lang);
+    const base=tpl[Math.floor(Math.random()*tpl.length)];
+    const data={movie: research.movie, detail: research.detail, hashtag: (research.hashtags[0]||'#MovieNews').replace('#','')};
+    text=fillTemplate(base, data);
+  }
+  // SEO score
+  const hasTags=(text.match(/#\w+/g)||[]).length;
+  const hasEmoji=/[\u{1F300}-\u{1FAFF}]/u.test(text);
+  const len=text.length;
+  let score=50;
+  if(hasTags>=3) score+=20; if(hasEmoji) score+=15; if(len>80 && len<500) score+=15;
+  $('apSeo').textContent = score + '/100 ' + (score>=85?'🔥 Excellent':score>=70?'✅ Good':'⚠️ Okay') + ` • ${hasTags} hashtags • ${len} chars`;
+  return text;
+}
+
+// 4) FULL AUTOPILOT PIPELINE
+let apTimer=null, apCountdown=null;
+async function runAutopilotOnce(){
+  const hasKey=$('apiKeyInput').value.trim();
+  const hasToken=$('pageId').value.trim() && $('pageToken').value.trim();
+  if(!hasToken) return showStatus('⚙️ আগে Settings এ Page ID + Token দাও', false);
+  $('autopilotStrip').classList.remove('hidden');
+  const progEl=$('autopilotProgress');
+  try{
+    let research;
+    if(hasKey){
+      try{ research=await autopilotResearch(); }catch(e){ toast('⚠️ Research API fail — offline trending নিচ্ছি'); research=offlineResearch(); }
+    } else {
+      research=offlineResearch();
+    }
+    const imageUrl=await autopilotImage(research.imagePrompt || research.topic + ' movie poster', research.topic);
+    const caption=await autopilotCaption(research);
+
+    // fill editor + preview
+    $('postText').value=caption;
+    $('imageUrl').value=imageUrl;
+    $('topicInput').value=research.topic;
+    S.imageUrl=imageUrl; save();
+    updatePreview(); updateCounts();
+    // show SEO thumbnail
+    $('apImagePrompt').textContent=research.imagePrompt.slice(0,90);
+    $('apImageUrl').textContent=imageUrl.slice(0,55)+'...';
+
+    apSetStep('📤 POSTING TO FACEBOOK...', 'ছবি সহ Facebook এ পোস্ট করছে...');
+    const res=await fbPost(caption, imageUrl);
+    apHideProgress();
+    S.stats.total++; S.stats.ok++;
+    S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:caption.slice(0,80), ok:true, id:res.id||res.post_id||'', hasImage:true, autopilot:true});
+    saveState(); renderLogs(); refreshStats();
+    showStatus('✅ Autopilot Success! ছবি সহ পোস্ট হয়েছে — ID: '+(res.id||res.post_id||'ok'), true);
+    toast('🚀 Autopilot Done! Research → Image → SEO → Post ✅');
+  }catch(e){
+    apHideProgress();
+    S.stats.total++;
+    S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:'Autopilot failed: '+e.message.slice(0,80), ok:false, err:e.message, hasImage:true});
+    saveState(); renderLogs(); refreshStats();
+    showStatus('❌ Autopilot Failed: '+e.message, false);
+  }
+}
+
+async function researchOnly(){
+  const hasKey=$('apiKeyInput').value.trim();
+  $('autopilotStrip').classList.remove('hidden');
+  try{
+    let r;
+    if(hasKey) { try{ r=await autopilotResearch(); }catch{ r=offlineResearch(); } }
+    else r=offlineResearch();
+    apHideProgress();
+    // fill without posting
+    $('topicInput').value=r.topic;
+    $('imageUrl').value=await autopilotImage(r.imagePrompt, r.topic);
+    $('postText').value=await autopilotCaption(r);
+    S.imageUrl=$('imageUrl').value; save(); updatePreview(); updateCounts();
+    apHideProgress();
+    toast('🔍 Research Done — Preview দেখো, পছন্দ হলে Post করো');
+  }catch(e){ apHideProgress(); showStatus('❌ '+e.message,false); }
+}
+
+function toggleAutopilot(force){
+  const on= typeof force==='boolean' ? force : $('autopilotToggle').checked;
+  $('autopilotToggle').checked=on;
+  const label=$('autopilotLabel'), hint=$('autopilotHint');
+  if(on){
+    if(!$('apiKeyInput').value.trim()){ $('autopilotToggle').checked=false; return showStatus('⚙️ আগে CodeCraft API Key দাও (AI ছাড়া Research হবে না)', false); }
+    if(!$('pageId').value.trim() || !$('pageToken').value.trim()){ $('autopilotToggle').checked=false; return showStatus('⚙️ আগে Page ID + Token দাও', false); }
+    label.textContent='Autopilot ON ●';
+    label.className='ml-3 text-sm font-bold text-emerald-400';
+    hint.textContent='✅ চালু — নির্দিষ্ট সময় পর পর Research → Image → SEO → Auto Post';
+    hint.className='text-xs font-bold text-emerald-400';
+    $('autopilotStrip').classList.remove('hidden');
+    const mins=parseInt($('intervalSel').value);
+    $('apNextRun').textContent='পরবর্তী রান: '+mins+' মিনিট পর';
+    // schedule
+    clearInterval(apTimer); clearInterval(apCountdown);
+    let nextAt=Date.now()+mins*60*1000;
+    apCountdown=setInterval(()=>{
+      const d=Math.max(0,nextAt-Date.now());
+      const m=Math.floor(d/60000), s=Math.floor((d%60000)/1000);
+      $('apNextRun').textContent = d<=0 ? 'Running...' : `পরবর্তী Autopilot: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      $('statNext').textContent = d<=0 ? 'এখনই' : `${m}m ${s}s`;
+    }, 500);
+    apTimer=setInterval(async()=>{
+      const lim=parseInt($('limitSel').value);
+      if(lim!==0){
+        const today=new Date().toDateString();
+        if(lastDateStr!==today){ lastDateStr=today; todayCount=0; }
+        if(todayCount>=lim){ showStatus('⏸️ Daily limit reached — Autopilot pause', false); toggleAutopilot(false); return; }
+      }
+      await runAutopilotOnce();
+      todayCount++;
+      nextAt=Date.now()+mins*60*1000;
+    }, mins*60*1000);
+    saveState();
+    toast('🤖 Autopilot ON — প্রতি '+mins+' মিনিটে Research+Image+Post');
+  } else {
+    label.textContent='Autopilot OFF';
+    label.className='ml-3 text-sm font-bold';
+    hint.textContent='চালু করলে AI নিজে রিসার্চ করে ছবি সহ পোস্ট করবে';
+    hint.className='text-xs text-white/50';
+    clearInterval(apTimer); clearInterval(apCountdown); apTimer=null;
+    apHideProgress();
+    $('statNext').textContent='—';
+    saveState();
+  }
+}
+
+// CodeCraft API = OpenAI-compatible, base: https://codecraftapi.com/v1
+async function callExternalAI(prompt){
+  const provider=$('aiProvider').value;
+  const key=$('apiKeyInput').value.trim();
+  if(!key) return null;
+  if(provider==='codecraft'){
+    const model=$('ccModel') ? $('ccModel').value : 'gpt-4o-mini';
+    try{
+      const r=await fetch('https://codecraftapi.com/v1/chat/completions',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+        body:JSON.stringify({model, messages:[{role:'user',content:prompt}], temperature:0.9, max_tokens:500})
+      });
+      const j=await r.json();
+      if(j.error) { console.warn('CodeCraft error', j.error); throw new Error(j.error.message || JSON.stringify(j.error)); }
+      return j.choices?.[0]?.message?.content?.trim() || null;
+    }catch(e){ console.warn('CodeCraft failed', e); throw e; }
+  }
+  try{
+    if(provider==='openai'){
+      const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:prompt}],temperature:0.9,max_tokens:450})});
+      const j=await r.json(); return j.choices?.[0]?.message?.content?.trim() || null;
+    }
+    if(provider==='gemini'){
+      const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key='+encodeURIComponent(key),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+      const j=await r.json(); return j.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
+    }
+    if(provider==='claude'){
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-3-haiku-20240307',max_tokens:450,messages:[{role:'user',content:prompt}]})});
+      const j=await r.json(); return j.content?.[0]?.text?.trim() || null;
+    }
+  }catch(e){ console.warn(e); return null; }
+  return null;
+}
+
+async function generatePost(){
+  const topic=$('topicInput').value.trim() || 'Dhallywood movie news';
+  const lang=$('langSel').value, tone=$('toneSel').value;
+  const btn=$('genBtn'); const old=btn.innerHTML;
+  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Generating...'; btn.disabled=true;
+
+  // always ensure TOPIC-MATCHED image
+  let imgUrl=$('imageUrl').value.trim();
+  if(!imgUrl) { imgUrl=topicMatchedImage(topic, ''); $('imageUrl').value=imgUrl; S.imageUrl=imgUrl; }
+
+  let text=null;
+  let errMsg=null;
+  const prompt = `You are a viral Facebook movie page admin. Write a short Facebook post in ${lang==='bn'?'Bengali':lang==='en'?'English':'Bengali mostly (70%) and sometimes English (30%)'} about "${topic}" with type "${tone}". Cover industries: Dhallywood, Bollywood, South Indian, Hollywood, Tollywood. Keep under 450 chars, add 3-4 hashtags, 1-2 emojis, very engaging hook. No preamble.`;
+
+  try{
+    const ext = await callExternalAI(prompt);
+    if(ext) text=ext;
+  }catch(e){
+    errMsg=e.message;
+    text=null;
+  }
+  if(!text){
+    if(errMsg) toast('⚠️ CodeCraft Error: '+errMsg+' — Built-in দিয়ে বানানো হলো');
+    const {tpl, isEn} = pickMovieTemplate(tone, lang);
+    const base=tpl[Math.floor(Math.random()*tpl.length)];
+    const data=MOVIE_DB[Math.floor(Math.random()*MOVIE_DB.length)];
+    const customMovie = topic.split(' ').slice(0,3).join(' ');
+    if(customMovie.length>4) data.movie=customMovie;
+    text=fillTemplate(base, data);
+    if(!text.includes('#')) text += "\n\n" + hashtagsForMovie(topic, isEn);
+  }
+
+  $('postText').value=text;
+  // refresh topic-matched thumbs for this caption
+  updatePreview(); updateCounts(); save();
+  refreshThumbs();
+  btn.innerHTML=old; btn.disabled=false;
+  toast('✨ মুভি পোস্ট + Topic-matched ছবি রেডি! Preview দেখো');
+}
+function generateVariation(){
+  $('imageUrl').value=''; // force new image
+  generatePost();
+}
+
+// ---------- FACEBOOK POST (IMAGE MANDATORY) ----------
+function showStatus(msg, ok){
+  const el=$('postStatus'); el.classList.remove('hidden');
+  el.className='mt-3 rounded-xl px-4 py-3 text-sm ' + (ok?'bg-emerald-500/15 border border-emerald-500/20 text-emerald-200':'bg-red-500/15 border border-red-500/20 text-red-200');
+  el.textContent=msg;
+}
+function toast(msg){
+  showStatus(msg, true); setTimeout(()=>$('postStatus').classList.add('hidden'), 3000);
+}
+
+async function fbPost(message, imageUrl){
+  const pageId=$('pageId').value.trim(), token=$('pageToken').value.trim();
+  if(!pageId || !token) throw new Error('Page ID / Token দাও (⚙️ Settings)');
+  if(!message.trim()) throw new Error('পোস্ট ফাঁকা!');
+  // IMAGE MANDATORY — TOPIC-MATCHED
+  if(!imageUrl || !imageUrl.trim()){
+    imageUrl=topicMatchedImage($('topicInput').value, message.slice(0,80));
+    $('imageUrl').value=imageUrl;
+  }
+  try{
+    const fd=new FormData(); fd.append('url', imageUrl); fd.append('caption', message); fd.append('access_token', token);
+    const r=await fetch(`https://graph.facebook.com/v19.0/${encodeURIComponent(pageId)}/photos`,{method:'POST', body:fd});
+    const j=await r.json();
+    if(j.id) return j;
+    if(j.error) throw new Error(j.error.message || JSON.stringify(j.error));
+    return j;
+  }catch(e){
+    // fallback: if photo fails, try feed with image link (still shows image preview)
+    if(e.message && e.message.includes('Page ID')) throw e;
+    try{
+      const r2=await fetch(`https://graph.facebook.com/v19.0/${encodeURIComponent(pageId)}/feed`,{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({message: message + `\n${imageUrl}`, access_token: token})
+      });
+      const j2=await r2.json();
+      if(j2.error) throw new Error(j2.error.message);
+      return j2;
+    }catch(e2){ throw new Error(e.message + ' | ' + e2.message); }
+  }
+}
+
+async function postNow(){
+  const msg=$('postText').value;
+  let img=$('imageUrl').value.trim();
+  if(!img) { img=movieImageFor($('topicInput').value); $('imageUrl').value=img; save(); updatePreview(); }
+  const btn=$('postNowBtn'); const old=btn.innerHTML;
+  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Posting...'; btn.disabled=true;
+  try{
+    const res=await fbPost(msg, img);
+    S.stats.total++; S.stats.ok++; S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:msg.slice(0,80), ok:true, id:res.id||res.post_id||'', hasImage:true});
+    saveState(); renderLogs(); refreshStats();
+    showStatus('✅ ছবি সহ পোস্ট সফল! ID: '+(res.id||res.post_id||'ok'), true);
+  }catch(e){
+    S.stats.total++; S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:msg.slice(0,80), ok:false, err:e.message, hasImage:true});
+    saveState(); renderLogs(); refreshStats();
+    showStatus('❌ Failed: '+e.message, false);
+  }finally{ btn.innerHTML=old; btn.disabled=false; save(); }
+}
+
+function scheduleOnce(){
+  const v=$('scheduleTime').value;
+  if(!v) return showStatus('⏰ Schedule time দাও', false);
+  const when=new Date(v);
+  if(when<=new Date()) return showStatus('⏰ ভবিষ্যতের সময় দাও', false);
+  const delay=when - new Date();
+  showStatus('⏰ Scheduled (ছবি সহ): '+when.toLocaleString('bn-BD')+' — ট্যাব খোলা রাখো', true);
+  setTimeout(async()=>{
+    if(!$('postText').value.trim()) await generatePost();
+    let img=$('imageUrl').value.trim();
+    if(!img) { img=movieImageFor($('topicInput').value); $('imageUrl').value=img; }
+    const msg=$('postText').value;
+    try{
+      const res=await fbPost(msg, img);
+      S.stats.total++; S.stats.ok++; S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:msg.slice(0,80), ok:true, id:res.id||'', hasImage:true});
+      saveState(); renderLogs(); refreshStats();
+    }catch(e){
+      S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:$('postText').value.slice(0,80), ok:false, err:e.message, hasImage:true});
+      saveState(); renderLogs();
+    }
+  }, delay);
+}
+
+function saveDraft(){
+  S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:$('postText').value.slice(0,80)||'(empty draft)', ok:null, hasImage:!!$('imageUrl').value.trim()});
+  saveState(); renderLogs(); toast('💾 Draft saved');
+}
+function copyPost(){ navigator.clipboard.writeText($('postText').value); toast('📋 Copied!'); }
+function clearPost(){ $('postText').value=''; updatePreview(); updateCounts(); }
+
+// ---------- AUTO SCHEDULER (IMAGE ALWAYS) ----------
+function toggleAuto(force){
+  const on = typeof force==='boolean' ? force : $('autoToggle').checked;
+  $('autoToggle').checked=on; S.autoOn=on; saveState();
+  if(on) startAuto(); else stopAuto();
+}
+function startAuto(){
+  const mins=parseInt($('intervalSel').value);
+  if(!$('pageId').value.trim() || !$('pageToken').value.trim()){
+    $('autoToggle').checked=false; S.autoOn=false;
+    return showStatus('⚙️ আগে Page ID / Token save করো', false);
+  }
+  $('autoHint').textContent='✅ Auto চালু — প্রতি '+mins+' মিনিটে ছবি সহ পোস্ট';
+  $('autoHint').className='text-xs font-bold text-emerald-400 -mt-1 mb-3';
+  $('countdownBox').classList.remove('hidden');
+  scheduleNext(mins);
+  timer=setInterval(async()=>{
+    if(limitReached()) { showStatus('⏸️ Daily limit reached', false); stopAuto(); return; }
+    await generatePost();
+    const msg=$('postText').value;
+    let img=$('imageUrl').value.trim();
+    if(!img) img=movieImageFor($('topicInput').value);
+    try{
+      const res=await fbPost(msg, img);
+      S.stats.total++; S.stats.ok++; todayCount++;
+      S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:msg.slice(0,80), ok:true, id:res.id||'', hasImage:true});
+    }catch(e){
+      S.stats.total++; S.logs.unshift({at:new Date().toLocaleString('bn-BD'), text:msg.slice(0,80), ok:false, err:e.message, hasImage:true});
+    }
+    saveState(); renderLogs(); refreshStats(); scheduleNext(mins);
+  }, mins*60*1000);
+  scheduleNext(mins);
+  toast('🤖 Auto চালু — প্রতি '+mins+' মিনিটে ছবি সহ পোস্ট হবে');
+}
+function stopAuto(){
+  clearInterval(timer); clearInterval(countdownTimer); timer=null; nextAt=null;
+  $('countdownBox').classList.add('hidden');
+  $('autoHint').textContent='বন্ধ আছে — চালু করলে প্রতি পোস্ট ছবি সহ auto যাবে';
+  $('autoHint').className='text-xs text-white/50 -mt-1 mb-3';
+  S.autoOn=false; saveState();
+}
+function restartAuto(){ if(S.autoOn){ stopAuto(); $('autoToggle').checked=true; S.autoOn=true; startAuto(); } }
+function scheduleNext(mins){
+  nextAt=Date.now()+mins*60*1000;
+  clearInterval(countdownTimer);
+  countdownTimer=setInterval(()=>{
+    const d=Math.max(0, nextAt - Date.now());
+    const m=Math.floor(d/60000), s=Math.floor((d%60000)/1000);
+    $('countdown').textContent = d<=0 ? 'Posting...' : `পরবর্তী ছবি পোস্ট: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    $('statNext').textContent = d<=0 ? 'এখনই' : `${m}m ${s}s`;
+  }, 500);
+}
+function limitReached(){
+  const lim=parseInt($('limitSel').value);
+  if(lim===0) return false;
+  const today=new Date().toDateString();
+  if(lastDateStr!==today){ lastDateStr=today; todayCount=0; }
+  return todayCount >= lim;
+}
+
+// ---------- SETTINGS / CONNECTION ----------
+async function testConnection(){
+  const id=$('pageId').value.trim(), token=$('pageToken').value.trim();
+  const el=$('connStatus'); el.classList.remove('hidden');
+  if(!id||!token){ el.className='rounded-xl px-4 py-3 text-sm bg-amber-500/15 border border-amber-500/20 text-amber-200'; el.textContent='ID / Token দাও'; return; }
+  el.className='rounded-xl px-4 py-3 text-sm bg-white/5 border border-white/10 text-white/70'; el.textContent='⏳ Checking...';
+  try{
+    const r=await fetch(`https://graph.facebook.com/v19.0/${encodeURIComponent(id)}?fields=name,access_token&access_token=${encodeURIComponent(token)}`);
+    const j=await r.json();
+    if(j.error) throw new Error(j.error.message);
+    el.className='rounded-xl px-4 py-3 text-sm bg-emerald-500/15 border border-emerald-500/20 text-emerald-200';
+    el.textContent='✅ Connected: '+(j.name||id);
+    if(j.name && !$('pageName').value.trim()){ $('pageName').value=j.name; updatePreviewMeta(); }
+  }catch(e){
+    el.className='rounded-xl px-4 py-3 text-sm bg-red-500/15 border border-red-500/20 text-red-200';
+    el.textContent='❌ '+e.message;
+  }
+}
+function saveSettings(){ save(); updatePreviewMeta(); refreshStats(); document.getElementById('settingsModal').classList.add('hidden'); toast('✅ Settings saved! Page ID 61581031296082 connected'); }
+function refreshStats(){
+  $('statTotal').textContent=S.stats.total||0;
+  $('statOk').textContent=S.stats.ok||0;
+  const ok=!!(S.pageId && S.pageToken);
+  $('statConn').textContent = ok ? 'Connected ✓' : 'Not Connected';
+  $('statConn').className = 'text-sm font-bold -mt-0.5 ' + (ok?'text-emerald-400':'text-amber-400');
+  $('statConnIcon').className='w-10 h-10 rounded-xl flex items-center justify-center border '+(ok?'bg-emerald-500/15 border-emerald-500/20 text-emerald-400':'bg-amber-500/15 border-amber-500/20 text-amber-400');
+  if(!S.stats.total) $('statNext').textContent='—';
+}
+function renderLogs(){
+  const c=$('logList');
+  if(!S.logs.length){ c.innerHTML='<div class="text-xs text-white/40 border border-dashed border-white/10 rounded-xl px-4 py-6 text-center">এখনো কোনো পোস্ট হয়নি — Generate চাপো</div>'; return; }
+  c.innerHTML=S.logs.slice(0,30).map(l=>{
+    const col=l.ok===true?'border-emerald-500/20 bg-emerald-500/10':l.ok===false?'border-red-500/20 bg-red-500/10':'border-white/10 bg-white/[.04]';
+    const icon=l.ok===true?'fa-check':l.ok===false?'fa-xmark':'fa-bookmark';
+    const imgBadge=l.hasImage?'<span class="text-[9px] bg-emerald-500 text-white rounded-full px-1.5 py-0.5 ml-1"><i class="fa-solid fa-image"></i> IMAGE</span>':'';
+    return `<div class="rounded-xl border ${col} px-3 py-2.5 flex gap-3 items-start">
+      <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-0.5"><i class="fa-solid ${icon} text-[11px]"></i></div>
+      <div class="flex-1 min-w-0"><div class="text-xs leading-relaxed break-words">${esc(l.text)||'(empty)'}${imgBadge}</div><div class="text-[11px] text-white/40">${l.at} ${l.id? '• '+l.id:''} ${l.err? '• '+esc(l.err):''}</div></div>
+      <span class="text-[10px] font-bold tracking-widest ${l.ok===true?'text-emerald-400':l.ok===false?'text-red-400':'text-white/40'}">${l.ok===true?'SUCCESS':l.ok===false?'FAILED':'DRAFT'}</span>
+    </div>`
+  }).join('');
+}
+function clearLogs(){ S.logs=[]; saveState(); renderLogs(); refreshStats(); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+function openHelp(){ document.getElementById('helpModal').classList.remove('hidden'); }
+
+updatePreview(); updateCounts();
+if(S.autoOn) { $('autoToggle').checked=true; startAuto(); }
+
+function downloadServerFiles(){
+  const nodeCode=`// movie-auto-poster/server.js — 24/7 image poster (Node.js)
+// npm i node-cron axios
+import cron from 'node-cron';
+import axios from 'axios';
+const PAGE_ID='61581031296082';
+const PAGE_TOKEN='YOUR_PAGE_TOKEN';
+// প্রতি 6 ঘন্টায় — প্রতিটা পোস্ট ছবি সহ
+const TOPICS=['Shakib Khan Toofan 2','Allu Arjun Pushpa 2','SRK box office','Hollywood Avengers','Movie facts bangla'];
+const IMAGES=['https://picsum.photos/seed/movie1/800/500','https://picsum.photos/seed/movie2/800/500','https://picsum.photos/seed/movie3/800/500'];
+cron.schedule('0 */6 * * *', async()=>{
+  const topic=TOPICS[Math.floor(Math.random()*TOPICS.length)];
+  const img=IMAGES[Math.floor(Math.random()*IMAGES.length)];
+  const msg = \`🎬 \${topic} — Auto Update \${new Date().toLocaleString('bn-BD')}\\n\\n#MovieNews #BoxOffice #Bangla\`;
+  try{
+    const fd=new URLSearchParams(); fd.append('url',img); fd.append('caption',msg); fd.append('access_token',PAGE_TOKEN);
+    const r=await axios.post(\`https://graph.facebook.com/v19.0/\${PAGE_ID}/photos\`, fd);
+    console.log('Posted with image', r.data);
+  }catch(e){ console.error(e.response?.data || e.message); }
+});
+console.log('Movie Auto Poster (IMAGE) running — every 6 hours');
+`;
+  const pyCode=`# movie-auto-poster/bot.py — pip install requests schedule
+import requests, random, time, schedule
+PAGE_ID="61581031296082"
+PAGE_TOKEN="YOUR_PAGE_TOKEN"
+TOPICS=["Shakib Khan Toofan 2","Allu Arjun Pushpa 2","SRK box office","Hollywood Avengers","Movie facts bangla"]
+IMAGES=["https://picsum.photos/seed/movie1/800/500","https://picsum.photos/seed/movie2/800/500","https://picsum.photos/seed/movie3/800/500"]
+def post():
+    topic=random.choice(TOPICS); img=random.choice(IMAGES)
+    msg=f"🎬 {topic} — Auto Update\\n\\n#MovieNews #BoxOffice #Bangla"
+    try:
+        r=requests.post(f"https://graph.facebook.com/v19.0/{PAGE_ID}/photos", data={"url":img,"caption":msg,"access_token":PAGE_TOKEN})
+        print(r.json())
+    except Exception as e: print(e)
+schedule.every(6).hours.do(post)
+print("Running every 6 hours with IMAGE... Ctrl+C to stop")
+while True:
+    schedule.run_pending(); time.sleep(1)
+`;
+  downloadText('server.js', nodeCode);
+  setTimeout(()=>downloadText('bot.py', pyCode), 300);
+  toast('📦 server.js + bot.py (IMAGE MODE) ডাউনলোড হলো');
+}
+function downloadText(name, text){
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Hosting Guide — Movie Autopilot</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>*{font-family:'Hind Siliguri',sans-serif}</style>
+</head>
+<body class="bg-[#07071a] text-white min-h-screen">
+<div class="max-w-[760px] mx-auto px-4 py-8">
+  <a href="./index.html" class="inline-flex items-center gap-2 text-sm border border-white/15 rounded-full px-4 py-2 hover:bg-white/10"><i class="fa-solid fa-arrow-left"></i> Tool এ ফিরে যাও</a>
+  <h1 class="text-3xl font-bold mt-6">🆓 Free তে 24/7 Host করো — PC Off থাকলেও চলবে</h1>
+  <p class="text-white/60 mt-2">2টা ফ্রি অপশন — যেটা সহজ লাগে সেটা করো। দুটোই 100% ফ্রি, কার্ড লাগে না।</p>
+
+  <!-- OPTION A -->
+  <div class="mt-8 rounded-[22px] overflow-hidden p-[1.5px] bg-gradient-to-r from-violet-600 to-cyan-500">
+    <div class="rounded-[20px] bg-[#0f0e2a] p-6">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center font-bold">A</div>
+        <div><div class="font-bold text-lg">Render.com — সবচেয়ে সহজ (Recommended)</div><div class="text-xs text-white/50">Free Web Service — 5 মিনিটে Done</div></div>
+        <span class="ml-auto text-xs bg-emerald-500 text-white rounded-full px-3 py-1 font-bold">FREE</span>
+      </div>
+      <ol class="mt-4 space-y-3 text-sm leading-relaxed list-decimal ml-5">
+        <li><b>GitHub এ Push করো:</b><br><span class="text-white/60">তোমার <code class="bg-white/10 rounded px-1.5 py-0.5">fb-auto-poster</code> ফোল্ডারটা GitHub এ push করো (private repo হলেও চলবে)।</span></li>
+        <li><b><a href="https://dashboard.render.com/" target="_blank" class="underline text-cyan-400">dashboard.render.com</a> এ যাও → New + → Web Service → GitHub repo connect</b></li>
+        <li>Settings:<br>
+          <div class="mt-2 rounded-xl bg-black/40 border border-white/10 p-3 text-xs font-mono leading-relaxed">
+            Build Command: <b class="text-emerald-300">npm install</b><br>
+            Start Command: <b class="text-emerald-300">npm start</b><br>
+            Plan: <b class="text-emerald-300">Free</b><br>
+            Region: Singapore (কাছাকাছি)
+          </div>
+        </li>
+        <li><b>Environment Variables (Add):</b>
+          <div class="mt-2 rounded-xl bg-black/40 border border-white/10 p-3 text-xs font-mono leading-relaxed">
+            PAGE_TOKEN = <span class="text-amber-300">তোমার FB Page Access Token (EAAG...)</span><br>
+            CODECRAFT_KEY = <span class="text-amber-300">তোমার codecraftapi.com API Key</span><br>
+            CODECRAFT_MODEL = <span class="text-white/60">gpt-4o-mini</span> <span class="text-white/40">(optional)</span><br>
+            RUN_ON_START = <span class="text-white/60">1</span> <span class="text-white/40">(optional — deploy এর 5 sec পর 1টা test post)</span>
+          </div>
+          <div class="text-xs text-amber-300 mt-1"><i class="fa-solid fa-triangle-exclamation"></i> Token/Key কখনো GitHub এ push করো না — শুধু Render Dashboard এ দাও।</div>
+        </li>
+        <li><b>Deploy চাপো → 2-3 মিনিটে Live!</b><br><span class="text-white/60">Live URL পাবে: <code class="bg-white/10 rounded px-1.5 py-0.5">https://movie-autopilot-xxxx.onrender.com</code></span></li>
+        <li>Test: <code class="bg-white/10 rounded px-1.5 py-0.5 text-xs">https://YOUR-APP.onrender.com/run</code> → সাথে সাথে 1টা Topic-matched ছবি সহ পোস্ট হবে!</li>
+      </ol>
+      <div class="mt-4 rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3 text-xs text-amber-200">
+        <i class="fa-solid fa-moon"></i> <b>Render Free Note:</b> 15 মিনিট কোনো request না এলে Sleep যায় — কিন্তু Cron ভিতরে আছে তাই 6 ঘন্টা পর নিজে জেগে পোস্ট করবে। Sleep ঠেকাতে <a href="https://uptimerobot.com/" target="_blank" class="underline">UptimeRobot.com</a> (ফ্রি) দিয়ে 5 মিনিট পর পর <code class="bg-white/10 rounded px-1">/ </code> ping করো।
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="mt-6 rounded-[22px] overflow-hidden p-[1.5px] bg-gradient-to-r from-fuchsia-500 to-orange-500">
+    <div class="rounded-[20px] bg-[#0f0e2a] p-6">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-fuchsia-600 flex items-center justify-center font-bold">B</div>
+        <div><div class="font-bold text-lg">GitHub Actions — কোড ছাড়াই</div><div class="text-xs text-white/50">Cron দিয়ে পোস্ট — কোনো সার্ভার লাগে না</div></div>
+        <span class="ml-auto text-xs bg-fuchsia-600 text-white rounded-full px-3 py-1 font-bold">FREE</span>
+      </div>
+      <ol class="mt-4 space-y-3 text-sm leading-relaxed list-decimal ml-5">
+        <li>GitHub repo → <b>Settings → Secrets and variables → Actions → New repository secret</b><br>
+          <div class="mt-2 rounded-xl bg-black/40 border border-white/10 p-3 text-xs font-mono">PAGE_TOKEN, CODECRAFT_KEY, PAGE_ID (=61581031296082)</div>
+        </li>
+        <li>Repo তে ফাইল বানাও: <code class="bg-white/10 rounded px-1.5 py-0.5 text-xs">.github/workflows/autopilot.yml</code> — নিচের কোড পেস্ট করো → Push করো। প্রতি 6 ঘন্টায় auto চলবে।</li>
+      </ol>
+      <div class="mt-3 rounded-xl bg-white/[.06] border border-white/10 p-3 text-xs font-mono overflow-auto">
+<pre class="whitespace-pre-wrap">name: Movie Autopilot
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # every 6 hours
+  workflow_dispatch:
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm install
+        working-directory: fb-auto-poster
+      - run: node server.js
+        working-directory: fb-auto-poster
+        env:
+          PAGE_TOKEN: ${{ secrets.PAGE_TOKEN }}
+          CODECRAFT_KEY: ${{ secrets.CODECRAFT_KEY }}
+          PAGE_ID: ${{ secrets.PAGE_ID }}
+          RUN_ON_START: '1'</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 px-5 py-4 text-sm">
+    <div class="font-bold text-emerald-300"><i class="fa-solid fa-circle-check"></i> কোনটা নেবে?</div>
+    <div class="text-white/70 mt-1"><b class="text-white">Render (A)</b> — সবচেয়ে সহজ, /run দিয়ে manual test করা যায়, Recommended।<br><b class="text-white">GitHub Actions (B)</b> — সার্ভার ছাড়াই, কিন্তু /run test নেই।</div>
+  </div>
+
+  <a href="./index.html" class="mt-6 inline-flex items-center gap-2 bg-white text-[#07071a] rounded-full px-6 py-3 text-sm font-bold hover:bg-white/90">← Tool এ ফিরে যাও</a>
+  <div class="h-10"></div>
+</div>
+</body>
+</html>
