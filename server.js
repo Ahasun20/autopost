@@ -86,34 +86,42 @@ async function runOnce(){
   return res;
 }
 
-// ---- cron: প্রতি 6 ঘন্টায় = দিনে 3টা (তোমার চাহিদা 70% BN + topic-matched image সহ) ----
-// Render free এ সবসময় চলবে — PC off থাকলেও
+// ---- cron: প্রতি 6 ঘন্টায় = দিনে 3টা ----
 cron.schedule('0 */6 * * *', async()=>{
   try{ await runOnce(); }catch(e){ console.error(' Cron failed:', e.response?.data || e.message); }
 });
 
-// health check server (Render free web service এর জন্য)
+// health check server — robust routing (trailing slash + query safe)
 import http from 'http';
 const PORT=process.env.PORT||3000;
 http.createServer((req,res)=>{
-  if(req.url==='/run'){
+  // robust pathname: /preview?x=1 or /preview/ both work
+  let pathname='/';
+  try{
+    const u=new URL(req.url, `http://${req.headers.host||'localhost'}`);
+    pathname=u.pathname.replace(/\/+$/,'') || '/';
+  }catch{
+    pathname=(req.url||'/').split('?')[0].split('#')[0].replace(/\/+$/,'') || '/';
+  }
+  console.log(` ${req.method} ${req.url} → pathname=${pathname}`);
+
+  if(pathname==='/run'){
     runOnce().then(r=>{ res.writeHead(200,{'Content-Type':'application/json'}); res.end(JSON.stringify({ok:true, id:r.id||r.post_id})); })
              .catch(e=>{ res.writeHead(500,{'Content-Type':'application/json'}); res.end(JSON.stringify({ok:false, error:e.response?.data||e.message})); });
     return;
   }
-  if(req.url==='/preview' || req.url==='/test'){
-    // Token ছাড়া test — Research + Image + Caption বানিয়ে দেখাবে, FB তে post করবে না
+  if(pathname==='/preview' || pathname==='/test' || pathname==='/dry-run'){
     (async()=>{
       const r=await research();
       const imageUrl=topicImage(r.imagePrompt || r.topic, r.detail);
       const caption=await makeCaption(r);
       res.writeHead(200,{'Content-Type':'application/json; charset=utf-8'});
-      res.end(JSON.stringify({ok:true, dryRun:true, research:r, imageUrl, caption, note:'Token ছাড়া Preview — FB তে যায়নি। PAGE_TOKEN দিলে /run এ Real Post হবে।'}, null, 2));
+      res.end(JSON.stringify({ok:true, dryRun:true, research:r, imageUrl, caption, note:'Token ছাড়া Preview — FB তে যায়নি। PAGE_TOKEN দিলে /run এ Real Post হবে।'}, null, 2));
     })().catch(e=>{ res.writeHead(500,{'Content-Type':'application/json'}); res.end(JSON.stringify({ok:false, error:e.message})); });
     return;
   }
   res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'});
-  res.end('Movie Autopilot running ✅\nGET /run = manual post (needs PAGE_TOKEN)\nGET /preview = dry-run test (NO token needed) — Research+Image+Caption দেখাবে\nCron: every 6 hours (3/day)\nPage: '+PAGE_ID+'\n');
+  res.end('Movie Autopilot running ✅\nGET /run = manual post (needs PAGE_TOKEN)\nGET /preview = dry-run test (NO token needed) — Research+Image+Caption দেখাবে\nGET /test = same as /preview\nCron: every 6 hours (3/day)\nPage: '+PAGE_ID+'\n');
 }).listen(PORT, ()=>console.log(`Health server on :${PORT} — GET /run to test`));
 
 console.log('🎬 Movie Autopilot (FREE HOST READY)');
