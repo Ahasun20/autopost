@@ -4,8 +4,8 @@
 import cron from 'node-cron';
 import axios from 'axios';
 
-// ===== তোমার Config (এখানে বসাও) =====
-const PAGE_ID    = '61581031296082';
+// ===== তোমার Config (Render Environment থেকে) =====
+const PAGE_ID    = process.env.PAGE_ID || '61581031296082';
 const PAGE_TOKEN = process.env.PAGE_TOKEN || 'YOUR_PAGE_TOKEN_HERE'; // Render env var
 const CODECRAFT_KEY = process.env.CODECRAFT_KEY || 'YOUR_CODECRAFT_KEY';
 const CODECRAFT_MODEL = process.env.CODECRAFT_MODEL || 'gpt-4o-mini';
@@ -65,12 +65,29 @@ async function makeCaption(r){
 
 async function fbPhotoPost(caption, imageUrl){
   if(!PAGE_TOKEN || PAGE_TOKEN.includes('YOUR_')) throw new Error('PAGE_TOKEN missing — set env var PAGE_TOKEN on Render');
-  const fd=new URLSearchParams();
-  fd.append('url', imageUrl);
-  fd.append('caption', caption);
-  fd.append('access_token', PAGE_TOKEN);
-  const r=await axios.post(`${GRAPH}/${PAGE_ID}/photos`, fd, {headers:{'Content-Type':'application/x-www-form-urlencoded'}, timeout:30000});
-  return r.data;
+  // Try fetching image and uploading as binary (more reliable than URL — FB sometimes can't fetch Pollinations)
+  try{
+    const imgRes=await axios.get(imageUrl, {responseType:'arraybuffer', timeout:25000, headers:{'Accept':'image/*'}});
+    const ctype=imgRes.headers['content-type']||'image/jpeg';
+    if(!ctype.startsWith('image/')) throw new Error('Not an image: '+ctype);
+    // upload as multipart
+    const FormData= (await import('form-data')).default;
+    const fd=new FormData();
+    fd.append('source', Buffer.from(imgRes.data), {filename: 'poster.jpg', contentType: ctype});
+    fd.append('caption', caption);
+    fd.append('access_token', PAGE_TOKEN);
+    const r=await axios.post(`${GRAPH}/${PAGE_ID}/photos`, fd, {headers: fd.getHeaders(), maxBodyLength: Infinity, timeout:30000});
+    return r.data;
+  }catch(e){
+    // fallback: URL method
+    console.warn(' Direct upload failed, trying URL method:', e.response?.data || e.message);
+    const fd2=new URLSearchParams();
+    fd2.append('url', imageUrl);
+    fd2.append('caption', caption);
+    fd2.append('access_token', PAGE_TOKEN);
+    const r2=await axios.post(`${GRAPH}/${PAGE_ID}/photos`, fd2, {headers:{'Content-Type':'application/x-www-form-urlencoded'}, timeout:30000});
+    return r2.data;
+  }
 }
 
 async function runOnce(){
