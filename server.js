@@ -4,21 +4,25 @@
 import cron from 'node-cron';
 import axios from 'axios';
 
-// ===== তোমার Config (Render Environment থেকে) =====
+// ===== Config (Render Environment থেকে) =====
 const PAGE_ID    = process.env.PAGE_ID || '61581031296082';
-const PAGE_TOKEN = process.env.PAGE_TOKEN || 'YOUR_PAGE_TOKEN_HERE'; // Render env var
+const PAGE_TOKEN = process.env.PAGE_TOKEN || 'YOUR_PAGE_TOKEN_HERE';
 const CODECRAFT_KEY = process.env.CODECRAFT_KEY || 'YOUR_CODECRAFT_KEY';
 const CODECRAFT_MODEL = process.env.CODECRAFT_MODEL || 'gpt-4o-mini';
 // =====================================
 
 const GRAPH = 'https://graph.facebook.com/v19.0';
 
-// Topic-matched image (Pollinations — free, no key)
+// Topic-matched image — Pollinations primary, picsum fallback (guaranteed image)
 function topicImage(topic, detail=""){
   const clean=(topic+" "+detail).replace(/[^a-zA-Z0-9 ]/g,' ').trim().slice(0,120);
+  if(!clean) return `https://picsum.photos/seed/movie${Math.floor(Math.random()*9999)}/800/500`;
   const enc=encodeURIComponent(clean + ", cinematic movie poster, 4k, highly detailed, dramatic lighting");
   const seed=Math.floor(Math.random()*999999);
   return `https://image.pollinations.ai/p/${enc}?width=800&height=500&seed=${seed}&nologo=true`;
+}
+function fallbackImage(){
+  return `https://picsum.photos/seed/movie${Math.floor(Math.random()*999999)}/800/500`;
 }
 
 async function codecraftChat(prompt){
@@ -63,31 +67,48 @@ async function makeCaption(r){
   return `🎬 ${r.movie} — ${r.detail} 🔥\n\nআপনি কতটা excited? কমেন্টে জানান! 👇\n\n${r.hashtags.join(' ')} #MovieNews`;
 }
 
+async function fetchImageBuffer(url){
+  const r=await axios.get(url, {responseType:'arraybuffer', timeout:20000, headers:{'Accept':'image/*','User-Agent':'Mozilla/5.0'}, maxRedirects:3});
+  const ct=r.headers['content-type']||'';
+  if(!ct.startsWith('image/')) throw new Error('Not an image, content-type='+ct+' size='+r.data.length);
+  if(r.data.length < 3000) throw new Error('Image too small, likely error page, size='+r.data.length);
+  return {buffer: Buffer.from(r.data), contentType: ct};
+}
+
 async function fbPhotoPost(caption, imageUrl){
   if(!PAGE_TOKEN || PAGE_TOKEN.includes('YOUR_')) throw new Error('PAGE_TOKEN missing — set env var PAGE_TOKEN on Render');
-  // Try fetching image and uploading as binary (more reliable than URL — FB sometimes can't fetch Pollinations)
-  try{
-    const imgRes=await axios.get(imageUrl, {responseType:'arraybuffer', timeout:25000, headers:{'Accept':'image/*'}});
-    const ctype=imgRes.headers['content-type']||'image/jpeg';
-    if(!ctype.startsWith('image/')) throw new Error('Not an image: '+ctype);
-    // upload as multipart
-    const FormData= (await import('form-data')).default;
-    const fd=new FormData();
-    fd.append('source', Buffer.from(imgRes.data), {filename: 'poster.jpg', contentType: ctype});
-    fd.append('caption', caption);
-    fd.append('access_token', PAGE_TOKEN);
-    const r=await axios.post(`${GRAPH}/${PAGE_ID}/photos`, fd, {headers: fd.getHeaders(), maxBodyLength: Infinity, timeout:30000});
-    return r.data;
-  }catch(e){
-    // fallback: URL method
-    console.warn(' Direct upload failed, trying URL method:', e.response?.data || e.message);
-    const fd2=new URLSearchParams();
-    fd2.append('url', imageUrl);
-    fd2.append('caption', caption);
-    fd2.append('access_token', PAGE_TOKEN);
-    const r2=await axios.post(`${GRAPH}/${PAGE_ID}/photos`, fd2, {headers:{'Content-Type':'application/x-www-form-urlencoded'}, timeout:30000});
-    return r2.data;
+  const candidates=[imageUrl, fallbackImage()];
+  let lastErr=null;
+  for(const url of candidates){
+    console.log(' Trying image:', url.slice(0,90)+'...');
+    // 1) try binary upload
+    try{
+      const {buffer, contentType}=await fetchImageBuffer(url);
+      console.log('  Fetched image', contentType, buffer.length, 'bytes');
+      const FormData=(await import('form-data')).default;
+      const fd=new FormData();
+      fd.append('source', buffer, {filename:'poster.jpg', contentType});
+      fd.append('caption', caption);
+      fd.append('access_token', PAGE_TOKEN);
+      const r=await axios.post(`${GRAPH}/${PAGE_ID}/photos`, fd, {headers: fd.getHeaders(), maxBodyLength: Infinity, timeout:30000});
+      console.log('  ✅ Binary upload success', r.data.id);
+      return r.data;
+    }catch(e){
+      lastErr=e;
+      console.warn('  Binary upload failed:', e.response?.data || e.message);
+      // 2) fallback: URL method for same url
+      try{
+        const fd2=new URLSearchParams(); fd2.append('url', url); fd2.append('caption', caption); fd2.append('access_token', PAGE_TOKEN);
+        const r2=await axios.post(`${GRAPH}/${PAGE_ID}/photos`, fd2, {headers:{'Content-Type':'application/x-www-form-urlencoded'}, timeout:30000});
+        console.log('  ✅ URL upload success', r2.data.id);
+        return r2.data;
+      }catch(e2){
+        lastErr=e2;
+        console.warn('  URL upload failed:', e2.response?.data || e2.message);
+      }
+    }
   }
+  throw new Error(lastErr?.response?.data?.error?.message || lastErr?.message || 'Both image uploads failed');
 }
 
 async function runOnce(){
@@ -95,9 +116,9 @@ async function runOnce(){
   const r=await research();
   console.log(' Research:', r.topic, '|', r.movie);
   const imageUrl=topicImage(r.imagePrompt || r.topic, r.detail);
-  console.log(' Image:', imageUrl.slice(0,80)+'...');
+  console.log(' Image:', imageUrl.slice(0,90)+'...');
   const caption=await makeCaption(r);
-  console.log(' Caption:', caption.slice(0,80)+'...');
+  console.log(' Caption:', caption.slice(0,90)+'...');
   const res=await fbPhotoPost(caption, imageUrl);
   console.log(' ✅ Posted:', res.id || res.post_id);
   return res;
@@ -108,23 +129,19 @@ cron.schedule('0 */6 * * *', async()=>{
   try{ await runOnce(); }catch(e){ console.error(' Cron failed:', e.response?.data || e.message); }
 });
 
-// health check server — robust routing (trailing slash + query safe)
+// health check server — robust routing
 import http from 'http';
 const PORT=process.env.PORT||3000;
 http.createServer((req,res)=>{
-  // robust pathname: /preview?x=1 or /preview/ both work
   let pathname='/';
   try{
     const u=new URL(req.url, `http://${req.headers.host||'localhost'}`);
     pathname=u.pathname.replace(/\/+$/,'') || '/';
-  }catch{
-    pathname=(req.url||'/').split('?')[0].split('#')[0].replace(/\/+$/,'') || '/';
-  }
+  }catch{ pathname=(req.url||'/').split('?')[0].split('#')[0].replace(/\/+$/,'') || '/'; }
   console.log(` ${req.method} ${req.url} → pathname=${pathname}`);
-
   if(pathname==='/run'){
     runOnce().then(r=>{ res.writeHead(200,{'Content-Type':'application/json'}); res.end(JSON.stringify({ok:true, id:r.id||r.post_id})); })
-             .catch(e=>{ res.writeHead(500,{'Content-Type':'application/json'}); res.end(JSON.stringify({ok:false, error:e.response?.data||e.message})); });
+             .catch(e=>{ res.writeHead(500,{'Content-Type':'application/json'}); res.end(JSON.stringify({ok:false, error:e.response?.data||e.message||e.toString()})); });
     return;
   }
   if(pathname==='/preview' || pathname==='/test' || pathname==='/dry-run'){
@@ -132,21 +149,20 @@ http.createServer((req,res)=>{
       const r=await research();
       const imageUrl=topicImage(r.imagePrompt || r.topic, r.detail);
       const caption=await makeCaption(r);
+      try{ const {buffer}=await fetchImageBuffer(imageUrl); console.log(' Preview image OK', buffer.length); }catch(e){ console.warn(' Preview image fetch warn:', e.message); }
       res.writeHead(200,{'Content-Type':'application/json; charset=utf-8'});
-      res.end(JSON.stringify({ok:true, dryRun:true, research:r, imageUrl, caption, note:'Token ছাড়া Preview — FB তে যায়নি। PAGE_TOKEN দিলে /run এ Real Post হবে।'}, null, 2));
+      res.end(JSON.stringify({ok:true, dryRun:true, research:r, imageUrl, fallbackImage: fallbackImage(), caption, note:'Token ছাড়া Preview — FB তে যায়নি। PAGE_TOKEN দিলে /run এ Real Post হবে।'}, null, 2));
     })().catch(e=>{ res.writeHead(500,{'Content-Type':'application/json'}); res.end(JSON.stringify({ok:false, error:e.message})); });
     return;
   }
   res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'});
-  res.end('Movie Autopilot running ✅\nGET /run = manual post (needs PAGE_TOKEN)\nGET /preview = dry-run test (NO token needed) — Research+Image+Caption দেখাবে\nGET /test = same as /preview\nCron: every 6 hours (3/day)\nPage: '+PAGE_ID+'\n');
+  res.end('Movie Autopilot running ✅\nGET /run = manual post (needs PAGE_TOKEN)\nGET /preview = dry-run test (NO token needed)\nCron: every 6 hours (3/day)\nPage: '+PAGE_ID+'\n');
 }).listen(PORT, ()=>console.log(`Health server on :${PORT} — GET /run to test`));
 
 console.log('🎬 Movie Autopilot (FREE HOST READY)');
 console.log(' Page:', PAGE_ID);
 console.log(' Cron: every 6 hours — PC off থাকলেও চলবে');
 console.log(' Test: curl https://YOUR-APP.onrender.com/run');
-
-// optional: run once on start if RUN_ON_START=1
 if(process.env.RUN_ON_START==='1'){
   setTimeout(()=>runOnce().catch(e=>console.error(' Startup run failed:', e.response?.data||e.message)), 5000);
 }
